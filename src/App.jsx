@@ -12233,6 +12233,23 @@ const oCl = (v) =>
 const GA = G_DATA.reduce((s, c) => s + c.gdei, 0) / G_DATA.length;
 const OA = 41.56;
 const OA_PILLARS = { p1: 33.12, p2: 58.73, p3: 22.16, p4: 32.44, p5: 53.18 };
+const OA_IND = {
+  i1_1: 13.99,
+  i1_2: 48.4,
+  i1_3: 14.86,
+  i1_4: 48.13,
+  i2_1: 61.65,
+  i2_2: 55.81,
+  i3_1: 17.18,
+  i3_2: 31.42,
+  i4_1: 17.95,
+  i4_2: 38.78,
+  i4_3: 57.83,
+  i4_4: 9.03,
+  i4_5: 32.21,
+  i5_1: 50.73,
+  i5_2: 55.62,
+};
 const getE = (code, key) => {
   const d = EXT[code];
   return d ? d[key] : null;
@@ -14400,14 +14417,22 @@ function OOverview() {
   const std = Math.sqrt(
     sorted.reduce((s, c) => s + Math.pow(c.idei - OA, 2), 0) / sorted.length,
   );
-  const pillarAvgs = OP.map((p, i) => {
-    const values = [33.12, 58.73, 22.16, 32.44, 53.18];
-    return {
-      name: p.short,
-      avg: values[i] || 0,
-      color: p.c,
-    };
-  });
+  const oicPillarValues = {
+    p1: 33.12,
+    p2: 58.73,
+    p3: 22.16,
+    p4: 32.44,
+    p5: 53.18,
+  };
+  const pillarAvgs = OP.map((p) => ({
+    name: p.short,
+    avg:
+      oicPillarValues[p.key] ||
+      Math.round(
+        sorted.reduce((s, c) => s + (c[p.key] || 0), 0) / sorted.length,
+      ),
+    color: p.c,
+  }));
   const tiers = [
     { n: "Tier 1", f: (c) => c.idei >= 65, c: "#1E88E5", b: "#E3F2FD" },
     {
@@ -14556,9 +14581,11 @@ function OProfiles() {
   }));
   const indData = OI.map((ind) => {
     const score = c[ind.k] || 0;
-    const avg = Math.round(
-      sorted.reduce((s, x) => s + (x[ind.k] || 0), 0) / sorted.length,
-    );
+    const avg =
+      OA_IND[ind.k] ||
+      Math.round(
+        sorted.reduce((s, x) => s + (x[ind.k] || 0), 0) / sorted.length,
+      );
     const diff = score - avg;
     return {
       ...ind,
@@ -15438,9 +15465,11 @@ function OIndicators() {
     .filter((c) => (c[si] || 0) > 0)
     .sort((a, b) => (b[si] || 0) - (a[si] || 0));
   const gaps = sorted.filter((c) => !c[si] || c[si] === 0);
-  const avg = ranked.length
-    ? ranked.reduce((s, c) => s + (c[si] || 0), 0) / ranked.length
-    : 0;
+  const avg =
+    OA_IND[si] ||
+    (ranked.length
+      ? ranked.reduce((s, c) => s + (c[si] || 0), 0) / ranked.length
+      : 0);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <Sel value={si} onChange={(e) => setSi(e.target.value)}>
@@ -16722,9 +16751,11 @@ function OReport() {
   const cl = oCl(c.idei);
   const indData = OI.map((ind) => {
     const score = c[ind.k] || 0;
-    const avg = Math.round(
-      sorted.reduce((s, x) => s + (x[ind.k] || 0), 0) / sorted.length,
-    );
+    const avg =
+      OA_IND[ind.k] ||
+      Math.round(
+        sorted.reduce((s, x) => s + (x[ind.k] || 0), 0) / sorted.length,
+      );
     const diff = score - avg;
     return {
       ...ind,
