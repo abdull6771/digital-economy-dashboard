@@ -15669,7 +15669,7 @@ function OMethodology() {
 // ═══ NAVIGATION ══════════════════════════════════════════════════
 const G_TABS = [
   {
-    g: "📊 Overview",
+    g: "Overview",
     items: [
       { id: "go", l: "Global Overview", C: GOverview },
       { id: "gs", l: "Statistics", C: GStats },
@@ -15677,7 +15677,7 @@ const G_TABS = [
     ],
   },
   {
-    g: "🔍 Analysis",
+    g: "Analysis",
     items: [
       { id: "gp", l: "Country Profiles", C: GProfiles },
       { id: "gc", l: "Compare Countries", C: GCompare },
@@ -15686,14 +15686,14 @@ const G_TABS = [
     ],
   },
   {
-    g: "🌍 Geographic",
+    g: "Geographic",
     items: [
       { id: "gg", l: "Geographic Analysis", C: GGeo },
       { id: "gcb", l: "Custom Builder", C: GCustom },
     ],
   },
   {
-    g: "📈 Deep Dives",
+    g: "Deep Dives",
     items: [
       { id: "gfi", l: "Financial Inclusion", C: GFinancial },
       { id: "gbd", l: "Business Digitization", C: GBusiness },
@@ -15708,14 +15708,14 @@ const G_TABS = [
 ];
 const O_TABS = [
   {
-    g: "📊 Overview",
+    g: "Overview",
     items: [
       { id: "oo", l: "OIC Overview", C: OOverview },
       { id: "obe", l: "OIC vs Global", C: OBenchmark },
     ],
   },
   {
-    g: "🔍 Analysis",
+    g: "Analysis",
     items: [
       { id: "op", l: "Country Profiles", C: OProfiles },
       { id: "oc", l: "Compare Countries", C: OCompare },
@@ -15723,7 +15723,7 @@ const O_TABS = [
     ],
   },
   {
-    g: "🌍 Regional",
+    g: "Regional",
     items: [
       { id: "org", l: "Regional Analysis", C: ORegional },
       { id: "oti", l: "Tier Analysis", C: OTiers },
@@ -15731,7 +15731,7 @@ const O_TABS = [
     ],
   },
   {
-    g: "📈 Details",
+    g: "Details",
     items: [
       { id: "oin", l: "Indicator Deep-Dive", C: OIndicators },
       { id: "om", l: "Methodology", C: OMethodology },
@@ -15819,12 +15819,12 @@ export default function App() {
           {[
             {
               id: "global",
-              l: "🌐 Global Index",
+              l: "Global Index",
               sub: `${G_DATA.length} countries`,
             },
             {
               id: "oic",
-              l: "🕌 OIC / IDEI",
+              l: "OIC / IDEI",
               sub: `${OIC_DATA.length} countries`,
             },
           ].map((m) => (
@@ -15923,7 +15923,7 @@ export default function App() {
               fontFamily: "var(--font)",
             }}
           >
-            {dark ? "☀️ Light Mode" : "🌙 Dark Mode"}
+            {dark ? "Light Mode" : "Dark Mode"}
           </button>
           <div
             style={{
