@@ -15062,7 +15062,7 @@ function SearchBar({ data, scoreKey, onSelect, placeholder }) {
           opacity: 0.4,
         }}
       >
-        🔍
+        Search
       </span>
       {open && filtered.length > 0 && (
         <div
@@ -16075,7 +16075,7 @@ function GGeo() {
               fontFamily: "var(--font)",
             }}
           >
-            📥 Export CSV
+            Export CSV
           </button>
         </div>
         <div style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -16239,7 +16239,7 @@ function DeepDive({ title, keys, chartKeys, desc }) {
               fontFamily: "var(--font)",
             }}
           >
-            📥 CSV
+            CSV
           </button>
         </div>
         <ResponsiveContainer width="100%" height={420}>
@@ -16643,7 +16643,7 @@ function GPeers() {
                         fontWeight: 600,
                       }}
                     >
-                      📈 Learn from
+                      Learn from
                     </span>
                   )}
                 </td>
@@ -17239,7 +17239,7 @@ function OProfiles() {
         </div>
       </Card>
       <Card style={{ borderLeft: "4px solid #1E88E5" }}>
-        <Title>🎯 Policy Recommendations — {c.name}</Title>
+        <Title>Policy Recommendations — {c.name}</Title>
         {strengths.length > 0 && (
           <div style={{ marginBottom: "16px" }}>
             <div
@@ -17292,7 +17292,7 @@ function OProfiles() {
                 marginBottom: "8px",
               }}
             >
-              📊 Data Gaps to Close ({gaps.length})
+              Data Gaps to Close ({gaps.length})
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
               {gaps.map((g) => (
@@ -17661,7 +17661,7 @@ function ORegional() {
               cursor: "pointer",
             }}
           >
-            📥 CSV
+            CSV
           </button>
         </div>
         <div style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -18580,7 +18580,7 @@ function GReport() {
               fontFamily: "var(--font)",
             }}
           >
-            📄 Download PDF
+            Download PDF
           </button>
         </div>
       </Card>
@@ -19334,7 +19334,7 @@ function OReport() {
               fontFamily: "var(--font)",
             }}
           >
-            📄 Download PDF
+            Download PDF
           </button>
         </div>
       </Card>
@@ -19868,7 +19868,7 @@ function OReport() {
 // ═══ NAVIGATION ══════════════════════════════════════════════════
 const G_TABS = [
   {
-    g: "📊 Overview",
+    g: "Overview",
     items: [
       { id: "go", l: "Global Overview", C: GOverview },
       { id: "gs", l: "Statistics", C: GStats },
@@ -19876,7 +19876,7 @@ const G_TABS = [
     ],
   },
   {
-    g: "🔍 Analysis",
+    g: "Analysis",
     items: [
       { id: "gp", l: "Country Profiles", C: GProfiles },
       { id: "gc", l: "Compare Countries", C: GCompare },
@@ -19885,14 +19885,14 @@ const G_TABS = [
     ],
   },
   {
-    g: "🌍 Geographic",
+    g: "Geographic",
     items: [
       { id: "gg", l: "Geographic Analysis", C: GGeo },
       { id: "gcb", l: "Custom Builder", C: GCustom },
     ],
   },
   {
-    g: "📈 Deep Dives",
+    g: "Deep Dives",
     items: [
       { id: "gfi", l: "Financial Inclusion", C: GFinancial },
       { id: "gbd", l: "Business Digitization", C: GBusiness },
@@ -19904,18 +19904,18 @@ const G_TABS = [
       { id: "gwi", l: "Patents", C: GPatents },
     ],
   },
-  { g: "📄 Reports", items: [{ id: "grp", l: "Generate Report", C: GReport }] },
+  { g: "Reports", items: [{ id: "grp", l: "Generate Report", C: GReport }] },
 ];
 const O_TABS = [
   {
-    g: "📊 Overview",
+    g: "Overview",
     items: [
       { id: "oo", l: "OIC Overview", C: OOverview },
       { id: "obe", l: "OIC vs Global", C: OBenchmark },
     ],
   },
   {
-    g: "🔍 Analysis",
+    g: "Analysis",
     items: [
       { id: "op", l: "Country Profiles", C: OProfiles },
       { id: "oc", l: "Compare Countries", C: OCompare },
@@ -19923,7 +19923,7 @@ const O_TABS = [
     ],
   },
   {
-    g: "🌍 Regional",
+    g: "Regional",
     items: [
       { id: "org", l: "Regional Analysis", C: ORegional },
       { id: "oti", l: "Tier Analysis", C: OTiers },
@@ -19931,13 +19931,13 @@ const O_TABS = [
     ],
   },
   {
-    g: "📈 Details",
+    g: "Details",
     items: [
       { id: "oin", l: "Indicator Deep-Dive", C: OIndicators },
       { id: "om", l: "Methodology", C: OMethodology },
     ],
   },
-  { g: "📄 Reports", items: [{ id: "orp", l: "Generate Report", C: OReport }] },
+  { g: "Reports", items: [{ id: "orp", l: "Generate Report", C: OReport }] },
 ];
 
 // ═══ APP ═════════════════════════════════════════════════════════
@@ -20124,7 +20124,7 @@ export default function App() {
               fontFamily: "var(--font)",
             }}
           >
-            {dark ? "☀️ Light Mode" : "🌙 Dark Mode"}
+            {dark ? "Light Mode" : "Dark Mode"}
           </button>
           <div
             style={{
