@@ -15666,10 +15666,1479 @@ function OMethodology() {
   );
 }
 
+// ═══ REPORT GENERATOR ═════════════════════════════════════════════
+function printReport() {
+  const el = document.getElementById("report-content");
+  if (!el) return;
+  const w = window.open("", "_blank", "width=900,height=700");
+  w.document
+    .write(`<!DOCTYPE html><html><head><title>Country Report</title><style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',sans-serif;color:#1E293B;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    @page{size:A4;margin:12mm 16mm}@media print{body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+  </style></head><body>${el.innerHTML}</body></html>`);
+  w.document.close();
+  setTimeout(() => {
+    w.print();
+  }, 500);
+}
+
+function GReport() {
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(null);
+  const filtered =
+    q.length > 0
+      ? G_DATA.filter((c) =>
+          c.name.toLowerCase().includes(q.toLowerCase()),
+        ).slice(0, 8)
+      : [];
+  const c = sel || G_DATA[0];
+  const cl = gCl(c.gdei);
+  const avg = GA;
+  const ranks = GP.map((p) => {
+    const s = [...G_DATA].sort((a, b) => b[p.key] - a[p.key]);
+    return {
+      ...p,
+      score: c[p.key],
+      rank: s.findIndex((x) => x.code === c.code) + 1,
+    };
+  });
+  const ranksS = [...ranks].sort((a, b) => b.score - a.score);
+  const strengths = ranksS.filter((p) => p.score > avg + 10);
+  const weak = ranksS.filter((p) => p.score < avg - 5);
+  const regionCs = G_DATA.filter((x) => x.region === c.region);
+  const regionAvg = regionCs.reduce((s, x) => s + x.gdei, 0) / regionCs.length;
+  const peers = G_DATA.filter((x) => x.code !== c.code)
+    .map((x) => ({
+      ...x,
+      dist: Math.sqrt(
+        GP.reduce((s, p) => s + Math.pow(c[p.key] - x[p.key], 2), 0),
+      ),
+    }))
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, 5);
+  const extKeys = [
+    "fa",
+    "fm",
+    "fi",
+    "gc",
+    "gd",
+    "ge",
+    "gp",
+    "cl",
+    "ct",
+    "co",
+    "cc",
+    "cp",
+    "io",
+    "ib",
+    "ie",
+  ];
+  const filled = extKeys.filter((k) => getE(c.code, k) != null).length;
+  const dataPct = Math.round((filled / extKeys.length) * 100);
+
+  // GovTech details
+  const gt = {
+    cs: getE(c.code, "gc"),
+    ce: getE(c.code, "gd"),
+    en: getE(c.code, "ge"),
+    pd: getE(c.code, "gp"),
+    dp: getE(c.code, "g6"),
+    od: getE(c.code, "g4"),
+  };
+  // Financial
+  const fi = {
+    acc: getE(c.code, "fa"),
+    mob: getE(c.code, "fm"),
+    int: getE(c.code, "fi"),
+  };
+  // Cyber
+  const cy = {
+    le: getE(c.code, "cl"),
+    te: getE(c.code, "ct"),
+    or: getE(c.code, "co"),
+    ca: getE(c.code, "cc"),
+    co: getE(c.code, "cp"),
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <Card>
+        <Title>Generate Country Report (PDF)</Title>
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ position: "relative", flex: 1, maxWidth: "400px" }}>
+            <input
+              value={q}
+              onChange={(e) => {
+                setQ(e.target.value);
+              }}
+              placeholder="Type a country name..."
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                border: "1px solid var(--border)",
+                borderRadius: "10px",
+                fontSize: "14px",
+                fontFamily: "var(--font)",
+                background: "var(--card)",
+                color: "var(--text)",
+              }}
+            />
+            {q.length > 0 && filtered.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  background: "var(--card)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "10px",
+                  marginTop: "4px",
+                  boxShadow: "0 8px 24px var(--shadow)",
+                  zIndex: 100,
+                  maxHeight: "260px",
+                  overflowY: "auto",
+                }}
+              >
+                {filtered.map((x) => (
+                  <div
+                    key={x.code}
+                    onClick={() => {
+                      setSel(x);
+                      setQ(x.name);
+                    }}
+                    style={{
+                      padding: "10px 16px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid var(--border)",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "var(--hover)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    <span style={{ fontWeight: 600 }}>{x.name}</span>
+                    <span style={{ color: "var(--accent)", fontWeight: 700 }}>
+                      {x.gdei.toFixed(1)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <button
+            onClick={printReport}
+            style={{
+              padding: "12px 24px",
+              border: "none",
+              borderRadius: "10px",
+              background: "#1E88E5",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontFamily: "var(--font)",
+            }}
+          >
+            📄 Download PDF
+          </button>
+        </div>
+      </Card>
+
+      {/* Report Preview */}
+      <div id="report-content">
+        <div
+          style={{
+            background: "#fff",
+            color: "#1E293B",
+            fontFamily: "'DM Sans',sans-serif",
+            maxWidth: "800px",
+            margin: "0 auto",
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              background: "linear-gradient(135deg,#1E88E5,#0D47A1)",
+              padding: "28px 32px",
+              color: "#fff",
+              borderRadius: "12px 12px 0 0",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.1em",
+                    opacity: 0.7,
+                  }}
+                >
+                  GLOBAL DIGITAL ECONOMY INDEX — COUNTRY REPORT
+                </div>
+                <div
+                  style={{
+                    fontSize: "26px",
+                    fontWeight: 700,
+                    fontFamily: "'DM Serif Display',serif",
+                    marginTop: "4px",
+                  }}
+                >
+                  {c.name}
+                </div>
+                <div
+                  style={{ fontSize: "13px", opacity: 0.8, marginTop: "4px" }}
+                >
+                  {c.region} · {cl.l}
+                </div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div
+                  style={{
+                    fontSize: "48px",
+                    fontWeight: 700,
+                    fontFamily: "'DM Serif Display',serif",
+                  }}
+                >
+                  {c.gdei.toFixed(1)}
+                </div>
+                <div style={{ fontSize: "12px", opacity: 0.7 }}>
+                  Rank #{c.rank} of {G_DATA.length}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ padding: "28px 32px", background: "#fff" }}>
+            {/* 1. Executive Summary */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "10px",
+                  color: "#0D47A1",
+                }}
+              >
+                1. Executive summary
+              </div>
+              <div
+                style={{ fontSize: "13px", lineHeight: 1.8, color: "#475569" }}
+              >
+                {c.name} ranks{" "}
+                <strong style={{ color: "#1E88E5" }}>#{c.rank} globally</strong>{" "}
+                with a GDEI score of {c.gdei.toFixed(1)}, placing it in the{" "}
+                <strong>{cl.l}</strong> tier. The country scores{" "}
+                {(c.gdei - avg).toFixed(1) > 0 ? "+" : ""}
+                {(c.gdei - avg).toFixed(1)} points{" "}
+                {c.gdei > avg ? "above" : "below"} the global average (
+                {avg.toFixed(1)}). Its strongest pillar is {ranksS[0].name} (
+                {ranksS[0].score.toFixed(1)}, #{ranksS[0].rank}) and its weakest
+                is {ranksS[ranksS.length - 1].name} (
+                {ranksS[ranksS.length - 1].score.toFixed(1)}, #
+                {ranksS[ranksS.length - 1].rank}).
+              </div>
+            </div>
+
+            {/* 2. Pillar Performance */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "14px",
+                  color: "#0D47A1",
+                }}
+              >
+                2. Pillar performance
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3,1fr)",
+                  gap: "10px",
+                }}
+              >
+                {ranksS.map((p) => {
+                  const isWeak = p.score < avg - 5;
+                  return (
+                    <div
+                      key={p.key}
+                      style={{
+                        padding: "14px",
+                        borderRadius: "10px",
+                        background: isWeak ? "#FFF3E0" : "#F8FAFC",
+                        border: isWeak
+                          ? "1px solid #F4511E30"
+                          : "1px solid #E2E8F0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          color: isWeak ? "#F4511E" : "#64748B",
+                        }}
+                      >
+                        {p.short}
+                        {isWeak ? " ⚠" : ""}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: "6px",
+                          marginTop: "4px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "22px",
+                            fontWeight: 700,
+                            color: isWeak ? "#F4511E" : p.c,
+                          }}
+                        >
+                          {p.score.toFixed(1)}
+                        </span>
+                        <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+                          #{p.rank}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          height: "4px",
+                          borderRadius: "2px",
+                          background: "#E2E8F0",
+                          marginTop: "8px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            height: "100%",
+                            borderRadius: "2px",
+                            background: isWeak ? "#F4511E" : p.c,
+                            width: `${p.score}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 3. Strengths & Weaknesses */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                3. Strengths & weaknesses
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "16px",
+                    borderLeft: "3px solid #43A047",
+                    background: "#F8FAFC",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      color: "#43A047",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Strengths ({strengths.length} pillars above avg+10)
+                  </div>
+                  {strengths.length > 0 ? (
+                    strengths.map((p) => (
+                      <div
+                        key={p.key}
+                        style={{
+                          fontSize: "12px",
+                          color: "#475569",
+                          lineHeight: 2,
+                        }}
+                      >
+                        {p.name}: {p.score.toFixed(1)} (#{p.rank})
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ fontSize: "12px", color: "#94A3B8" }}>
+                      No pillars significantly above average
+                    </div>
+                  )}
+                </div>
+                <div
+                  style={{
+                    padding: "16px",
+                    borderLeft: "3px solid #F4511E",
+                    background: "#F8FAFC",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      color: "#F4511E",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Weaknesses ({weak.length} pillars below avg-5)
+                  </div>
+                  {weak.length > 0 ? (
+                    weak.map((p) => (
+                      <div
+                        key={p.key}
+                        style={{
+                          fontSize: "12px",
+                          color: "#475569",
+                          lineHeight: 2,
+                        }}
+                      >
+                        {p.name}: {p.score.toFixed(1)} (#{p.rank})
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ fontSize: "12px", color: "#94A3B8" }}>
+                      No pillars significantly below average
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 4. Regional Benchmark */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                4. Regional benchmark — {c.region}
+              </div>
+              {[
+                { n: c.name, v: c.gdei, col: "#1E88E5" },
+                {
+                  n: "Regional avg (" + c.region.split(" ")[0] + ")",
+                  v: regionAvg,
+                  col: "#94A3B8",
+                },
+                { n: "Global avg", v: avg, col: "#CBD5E1" },
+              ].map((row) => (
+                <div
+                  key={row.n}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      width: "180px",
+                      color: row.col === "#1E88E5" ? "#1E293B" : "#64748B",
+                      fontWeight: row.col === "#1E88E5" ? 600 : 400,
+                    }}
+                  >
+                    {row.n}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      width: "40px",
+                      color: row.col,
+                    }}
+                  >
+                    {row.v.toFixed(1)}
+                  </span>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: "6px",
+                      borderRadius: "3px",
+                      background: "#E2E8F0",
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: "100%",
+                        borderRadius: "3px",
+                        background: row.col,
+                        width: `${row.v}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 5. Deep-Dive Highlights */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                5. Deep-dive highlights
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gap: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "12px",
+                    background: "#F8FAFC",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "#64748B",
+                      fontWeight: 600,
+                      marginBottom: "6px",
+                    }}
+                  >
+                    GovTech maturity
+                  </div>
+                  {[
+                    { l: "Core systems", v: gt.cs },
+                    { l: "Citizen engagement", v: gt.ce },
+                    { l: "Enablers", v: gt.en },
+                    { l: "Public delivery", v: gt.pd },
+                  ].map((r) => (
+                    <div
+                      key={r.l}
+                      style={{
+                        fontSize: "11px",
+                        color: "#475569",
+                        lineHeight: 1.9,
+                      }}
+                    >
+                      {r.l}:{" "}
+                      <strong>{r.v != null ? r.v.toFixed(2) : "N/A"}</strong>
+                    </div>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    padding: "12px",
+                    background: "#F8FAFC",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "#64748B",
+                      fontWeight: 600,
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Financial inclusion
+                  </div>
+                  {[
+                    { l: "Account ownership", v: fi.acc, u: "%" },
+                    { l: "Mobile ownership", v: fi.mob, u: "%" },
+                    { l: "Daily internet", v: fi.int, u: "%" },
+                  ].map((r) => (
+                    <div
+                      key={r.l}
+                      style={{
+                        fontSize: "11px",
+                        color: "#475569",
+                        lineHeight: 1.9,
+                      }}
+                    >
+                      {r.l}:{" "}
+                      <strong>
+                        {r.v != null ? r.v.toFixed(1) + r.u : "N/A"}
+                      </strong>
+                    </div>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    padding: "12px",
+                    background: "#F8FAFC",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "#64748B",
+                      fontWeight: 600,
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Cybersecurity (GCI)
+                  </div>
+                  {[
+                    { l: "Legal", v: cy.le },
+                    { l: "Technical", v: cy.te },
+                    { l: "Organizational", v: cy.or },
+                    { l: "Capacity", v: cy.ca },
+                    { l: "Cooperation", v: cy.co },
+                  ].map((r) => (
+                    <div
+                      key={r.l}
+                      style={{
+                        fontSize: "11px",
+                        color: "#475569",
+                        lineHeight: 1.9,
+                      }}
+                    >
+                      {r.l}:{" "}
+                      <strong>
+                        {r.v != null ? r.v.toFixed(1) + "/20" : "N/A"}
+                      </strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 6. Peers */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "10px",
+                  color: "#0D47A1",
+                }}
+              >
+                6. Peer countries (most similar profile)
+              </div>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {peers.map((p) => (
+                  <span
+                    key={p.code}
+                    style={{
+                      padding: "6px 14px",
+                      borderRadius: "8px",
+                      background: p.gdei > c.gdei ? "#E3F2FD" : "#F1F5F9",
+                      color: p.gdei > c.gdei ? "#1E88E5" : "#64748B",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {p.name} ({p.gdei.toFixed(1)})
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 7. Data Coverage */}
+            <div style={{ marginBottom: "12px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "8px",
+                  color: "#0D47A1",
+                }}
+              >
+                7. Data coverage
+              </div>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
+                <div
+                  style={{
+                    flex: 1,
+                    height: "8px",
+                    borderRadius: "4px",
+                    background: "#E2E8F0",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      borderRadius: "4px",
+                      background:
+                        dataPct >= 80
+                          ? "#43A047"
+                          : dataPct >= 50
+                            ? "#FFB300"
+                            : "#F4511E",
+                      width: `${dataPct}%`,
+                    }}
+                  />
+                </div>
+                <span
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    color: dataPct >= 80 ? "#43A047" : "#F4511E",
+                  }}
+                >
+                  {dataPct}%
+                </span>
+                <span style={{ fontSize: "12px", color: "#94A3B8" }}>
+                  ({filled}/{extKeys.length} deep-dive indicators)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div
+            style={{
+              borderTop: "1px solid #E2E8F0",
+              padding: "16px 32px",
+              fontSize: "11px",
+              color: "#94A3B8",
+              textAlign: "center",
+              background: "#F8FAFC",
+              borderRadius: "0 0 12px 12px",
+            }}
+          >
+            Generated from Global Digital Economy Index Dashboard · Data: ITU,
+            World Bank, UN, UNCTAD, UNESCO, WIPO · 2025
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OReport() {
+  const sorted = [...OIC_DATA]
+    .filter((c) => c.idei)
+    .sort((a, b) => a.rank - b.rank);
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(null);
+  const filtered =
+    q.length > 0
+      ? sorted
+          .filter((c) => c.name.toLowerCase().includes(q.toLowerCase()))
+          .slice(0, 8)
+      : [];
+  const c = sel || sorted[0];
+  if (!c) return null;
+  const cl = oCl(c.idei);
+  const indData = OI.map((ind) => {
+    const score = c[ind.k] || 0;
+    const avg = Math.round(
+      sorted.reduce((s, x) => s + (x[ind.k] || 0), 0) / sorted.length,
+    );
+    const diff = score - avg;
+    return {
+      ...ind,
+      score,
+      avg,
+      diff,
+      assess: !score
+        ? "DATA GAP"
+        : diff > 15
+          ? "STRENGTH"
+          : diff > 0
+            ? "ABOVE AVG"
+            : "BELOW AVG",
+    };
+  });
+  const strengths = indData.filter((i) => i.assess === "STRENGTH");
+  const aboveAvg = indData.filter((i) => i.assess === "ABOVE AVG");
+  const weak = indData.filter((i) => i.assess === "BELOW AVG");
+  const gaps = indData.filter((i) => i.assess === "DATA GAP");
+  // Find global match
+  const nameMap = {
+    Turkiye: "TUR",
+    Malaysia: "MYS",
+    Indonesia: "IDN",
+    "Saudi Arabia": "SAU",
+    "United Arab Emirates": "ARE",
+    Bahrain: "BHR",
+    Qatar: "QAT",
+    Egypt: "EGY",
+    Oman: "OMN",
+    Nigeria: "NGA",
+    Morocco: "MAR",
+    Jordan: "JOR",
+    Tunisia: "TUN",
+    Algeria: "DZA",
+    Pakistan: "PAK",
+    Bangladesh: "BGD",
+    Kuwait: "KWT",
+    Kazakhstan: "KAZ",
+    Uzbekistan: "UZB",
+    Azerbaijan: "AZE",
+    Albania: "ALB",
+  };
+  const gc = nameMap[c.name]
+    ? G_DATA.find((g) => g.code === nameMap[c.name])
+    : G_DATA.find((g) =>
+        g.name.toLowerCase().includes(c.name.toLowerCase().split(" ")[0]),
+      );
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <Card>
+        <Title>Generate OIC Country Report (PDF)</Title>
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ position: "relative", flex: 1, maxWidth: "400px" }}>
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Type an OIC country name..."
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                border: "1px solid var(--border)",
+                borderRadius: "10px",
+                fontSize: "14px",
+                fontFamily: "var(--font)",
+                background: "var(--card)",
+                color: "var(--text)",
+              }}
+            />
+            {q.length > 0 && filtered.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  background: "var(--card)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "10px",
+                  marginTop: "4px",
+                  boxShadow: "0 8px 24px var(--shadow)",
+                  zIndex: 100,
+                }}
+              >
+                {filtered.map((x) => (
+                  <div
+                    key={x.name}
+                    onClick={() => {
+                      setSel(x);
+                      setQ(x.name);
+                    }}
+                    style={{
+                      padding: "10px 16px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid var(--border)",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "var(--hover)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    <span style={{ fontWeight: 600 }}>{x.name}</span>
+                    <span style={{ color: "var(--accent)", fontWeight: 700 }}>
+                      {x.idei?.toFixed(1)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <button
+            onClick={printReport}
+            style={{
+              padding: "12px 24px",
+              border: "none",
+              borderRadius: "10px",
+              background: "#0D47A1",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontFamily: "var(--font)",
+            }}
+          >
+            📄 Download PDF
+          </button>
+        </div>
+      </Card>
+
+      <div id="report-content">
+        <div
+          style={{
+            background: "#fff",
+            color: "#1E293B",
+            fontFamily: "'DM Sans',sans-serif",
+            maxWidth: "800px",
+            margin: "0 auto",
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              background: "linear-gradient(135deg,#0D47A1,#002171)",
+              padding: "28px 32px",
+              color: "#fff",
+              borderRadius: "12px 12px 0 0",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.1em",
+                    opacity: 0.7,
+                  }}
+                >
+                  ISLAMIC DIGITAL ECONOMY INDEX — COUNTRY ASSESSMENT
+                </div>
+                <div
+                  style={{
+                    fontSize: "26px",
+                    fontWeight: 700,
+                    fontFamily: "'DM Serif Display',serif",
+                    marginTop: "4px",
+                  }}
+                >
+                  {c.name}
+                </div>
+                <div
+                  style={{ fontSize: "13px", opacity: 0.8, marginTop: "4px" }}
+                >
+                  {c.region} · {cl.l}
+                </div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div
+                  style={{
+                    fontSize: "48px",
+                    fontWeight: 700,
+                    fontFamily: "'DM Serif Display',serif",
+                  }}
+                >
+                  {c.idei?.toFixed(2)}
+                </div>
+                <div style={{ fontSize: "12px", opacity: 0.7 }}>
+                  #{c.rank} of {sorted.length} OIC States
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ padding: "28px 32px", background: "#fff" }}>
+            {/* 1. Executive Summary */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "10px",
+                  color: "#0D47A1",
+                }}
+              >
+                1. Executive summary
+              </div>
+              <div
+                style={{ fontSize: "13px", lineHeight: 1.8, color: "#475569" }}
+              >
+                {c.name} ranks{" "}
+                <strong style={{ color: "#1E88E5" }}>
+                  #{c.rank} among {sorted.length} OIC countries
+                </strong>{" "}
+                with an IDEI score of {c.idei?.toFixed(2)}, placing it in {cl.l}
+                . The country scores {(c.idei || 0) - OA > 0 ? "+" : ""}
+                {((c.idei || 0) - OA).toFixed(1)} points{" "}
+                {(c.idei || 0) > OA ? "above" : "below"} the OIC average (
+                {OA.toFixed(2)}).{" "}
+                {strengths.length > 0
+                  ? `Key strengths include ${strengths
+                      .slice(0, 3)
+                      .map((s) => `${s.n} (${s.score.toFixed(1)})`)
+                      .join(", ")}.`
+                  : ""}{" "}
+                {gaps.length > 0
+                  ? `Data gaps exist in ${gaps.map((g) => g.n).join(" and ")}.`
+                  : "Full indicator coverage achieved."}
+              </div>
+            </div>
+
+            {/* 2. Pillar Scores vs OIC Average */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "14px",
+                  color: "#0D47A1",
+                }}
+              >
+                2. Pillar scores vs OIC average
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(5,1fr)",
+                  gap: "8px",
+                }}
+              >
+                {OP.map((p) => {
+                  const score = c[p.key] || 0;
+                  const avg =
+                    sorted.reduce((s, x) => s + (x[p.key] || 0), 0) /
+                    sorted.length;
+                  const diff = score - avg;
+                  return (
+                    <div
+                      key={p.key}
+                      style={{
+                        padding: "14px 10px",
+                        textAlign: "center",
+                        borderRadius: "10px",
+                        background: "#F8FAFC",
+                        border: "1px solid #E2E8F0",
+                      }}
+                    >
+                      <div style={{ fontSize: "10px", color: "#64748B" }}>
+                        {p.short}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "22px",
+                          fontWeight: 700,
+                          color: p.c,
+                          margin: "6px 0",
+                        }}
+                      >
+                        {score.toFixed(1)}
+                      </div>
+                      <div style={{ fontSize: "10px", color: "#94A3B8" }}>
+                        OIC: {avg.toFixed(1)}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          color: diff > 0 ? "#43A047" : "#F4511E",
+                          marginTop: "4px",
+                        }}
+                      >
+                        {diff > 0 ? "+" : ""}
+                        {diff.toFixed(1)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 3. Indicator Assessment */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                3. Indicator-level assessment ({OI.length} indicators)
+              </div>
+              <table
+                style={{
+                  width: "100%",
+                  fontSize: "12px",
+                  borderCollapse: "collapse",
+                }}
+              >
+                <thead>
+                  <tr style={{ borderBottom: "2px solid #E2E8F0" }}>
+                    {[
+                      "Indicator",
+                      c.name.split(" ")[0],
+                      "OIC Avg",
+                      "Diff",
+                      "Assessment",
+                    ].map((h) => (
+                      <th
+                        key={h}
+                        style={{
+                          padding: "8px 4px",
+                          textAlign: "left",
+                          fontWeight: 600,
+                          color: "#64748B",
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {indData.map((i) => {
+                    const col =
+                      i.assess === "STRENGTH"
+                        ? "#43A047"
+                        : i.assess === "DATA GAP"
+                          ? "#94A3B8"
+                          : i.assess === "ABOVE AVG"
+                            ? "#1E88E5"
+                            : "#F4511E";
+                    return (
+                      <tr
+                        key={i.cd}
+                        style={{ borderBottom: "1px solid #F1F5F9" }}
+                      >
+                        <td style={{ padding: "7px 4px", fontWeight: 600 }}>
+                          {i.cd} {i.n}
+                        </td>
+                        <td
+                          style={{
+                            padding: "7px 4px",
+                            fontWeight: 700,
+                            color: col,
+                          }}
+                        >
+                          {i.score || "N/A"}
+                        </td>
+                        <td style={{ padding: "7px 4px", color: "#94A3B8" }}>
+                          {i.avg}
+                        </td>
+                        <td
+                          style={{
+                            padding: "7px 4px",
+                            fontWeight: 700,
+                            color: i.diff > 0 ? "#43A047" : "#F4511E",
+                          }}
+                        >
+                          {i.score
+                            ? `${i.diff > 0 ? "+" : ""}${i.diff.toFixed(1)}`
+                            : ""}
+                        </td>
+                        <td style={{ padding: "7px 4px" }}>
+                          <span
+                            style={{
+                              padding: "2px 8px",
+                              borderRadius: "4px",
+                              fontSize: "10px",
+                              fontWeight: 600,
+                              color: col,
+                              background: col + "18",
+                            }}
+                          >
+                            {i.assess}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* 4. Policy Recommendations */}
+            <div style={{ marginBottom: "28px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                4. Policy recommendations
+              </div>
+              {strengths.length > 0 && (
+                <div
+                  style={{
+                    padding: "14px 16px",
+                    borderLeft: "3px solid #43A047",
+                    background: "#F8FAFC",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "#43A047",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Strengths to maintain ({strengths.length} indicators)
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#475569",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {strengths
+                      .map(
+                        (s) =>
+                          `${s.cd} ${s.n} (${s.score.toFixed(1)}, +${s.diff.toFixed(1)} vs avg)`,
+                      )
+                      .join("; ")}
+                    .
+                  </div>
+                </div>
+              )}
+              {aboveAvg.length > 0 && (
+                <div
+                  style={{
+                    padding: "14px 16px",
+                    borderLeft: "3px solid #1E88E5",
+                    background: "#F8FAFC",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "#1E88E5",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Above average ({aboveAvg.length} indicators)
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#475569",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {aboveAvg
+                      .map((s) => `${s.cd} ${s.n} (${s.score.toFixed(1)})`)
+                      .join("; ")}
+                    .
+                  </div>
+                </div>
+              )}
+              {weak.length > 0 && (
+                <div
+                  style={{
+                    padding: "14px 16px",
+                    borderLeft: "3px solid #F4511E",
+                    background: "#F8FAFC",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "#F4511E",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Areas for improvement ({weak.length} indicators)
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#475569",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {weak
+                      .map(
+                        (w) =>
+                          `${w.cd} ${w.n} (${w.score.toFixed(1)}, ${w.diff.toFixed(1)} vs avg)`,
+                      )
+                      .join("; ")}
+                    .
+                  </div>
+                </div>
+              )}
+              {gaps.length > 0 && (
+                <div
+                  style={{
+                    padding: "14px 16px",
+                    borderLeft: "3px solid #94A3B8",
+                    background: "#F8FAFC",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "#64748B",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Data gaps to close ({gaps.length} indicators)
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#475569",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {gaps.map((g) => `${g.cd} ${g.n} (${g.s})`).join("; ")} —
+                    not performance weaknesses but reporting blind spots that
+                    should be addressed.
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 5. OIC vs Global Positioning */}
+            <div style={{ marginBottom: "12px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                5. OIC vs global positioning
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "18px",
+                    textAlign: "center",
+                    borderRadius: "10px",
+                    background: "#F8FAFC",
+                    border: "1px solid #E2E8F0",
+                  }}
+                >
+                  <div style={{ fontSize: "11px", color: "#64748B" }}>
+                    OIC rank
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "36px",
+                      fontWeight: 700,
+                      color: "#1E88E5",
+                      margin: "4px 0",
+                    }}
+                  >
+                    #{c.rank}
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#94A3B8" }}>
+                    of {sorted.length} · IDEI: {c.idei?.toFixed(2)}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    padding: "18px",
+                    textAlign: "center",
+                    borderRadius: "10px",
+                    background: "#F8FAFC",
+                    border: "1px solid #E2E8F0",
+                  }}
+                >
+                  <div style={{ fontSize: "11px", color: "#64748B" }}>
+                    Global rank (GDEI)
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "36px",
+                      fontWeight: 700,
+                      color: gc ? "#43A047" : "#94A3B8",
+                      margin: "4px 0",
+                    }}
+                  >
+                    {gc ? `#${gc.rank}` : "—"}
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#94A3B8" }}>
+                    {gc
+                      ? `of ${G_DATA.length} · GDEI: ${gc.gdei.toFixed(1)}`
+                      : "Not matched"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              borderTop: "1px solid #E2E8F0",
+              padding: "16px 32px",
+              fontSize: "11px",
+              color: "#94A3B8",
+              textAlign: "center",
+              background: "#F8FAFC",
+              borderRadius: "0 0 12px 12px",
+            }}
+          >
+            Generated from Islamic Digital Economy Index (IDEI) Dashboard ·
+            INCEIF University · 1,009 Sub-Indicators · 15 Databases · 2025
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ═══ NAVIGATION ══════════════════════════════════════════════════
 const G_TABS = [
   {
-    g: "Overview",
+    g: "📊 Overview",
     items: [
       { id: "go", l: "Global Overview", C: GOverview },
       { id: "gs", l: "Statistics", C: GStats },
@@ -15677,7 +17146,7 @@ const G_TABS = [
     ],
   },
   {
-    g: "Analysis",
+    g: "🔍 Analysis",
     items: [
       { id: "gp", l: "Country Profiles", C: GProfiles },
       { id: "gc", l: "Compare Countries", C: GCompare },
@@ -15686,14 +17155,14 @@ const G_TABS = [
     ],
   },
   {
-    g: "Geographic",
+    g: "🌍 Geographic",
     items: [
       { id: "gg", l: "Geographic Analysis", C: GGeo },
       { id: "gcb", l: "Custom Builder", C: GCustom },
     ],
   },
   {
-    g: "Deep Dives",
+    g: "📈 Deep Dives",
     items: [
       { id: "gfi", l: "Financial Inclusion", C: GFinancial },
       { id: "gbd", l: "Business Digitization", C: GBusiness },
@@ -15705,17 +17174,18 @@ const G_TABS = [
       { id: "gwi", l: "Patents", C: GPatents },
     ],
   },
+  { g: "📄 Reports", items: [{ id: "grp", l: "Generate Report", C: GReport }] },
 ];
 const O_TABS = [
   {
-    g: "Overview",
+    g: "📊 Overview",
     items: [
       { id: "oo", l: "OIC Overview", C: OOverview },
       { id: "obe", l: "OIC vs Global", C: OBenchmark },
     ],
   },
   {
-    g: "Analysis",
+    g: "🔍 Analysis",
     items: [
       { id: "op", l: "Country Profiles", C: OProfiles },
       { id: "oc", l: "Compare Countries", C: OCompare },
@@ -15723,7 +17193,7 @@ const O_TABS = [
     ],
   },
   {
-    g: "Regional",
+    g: "🌍 Regional",
     items: [
       { id: "org", l: "Regional Analysis", C: ORegional },
       { id: "oti", l: "Tier Analysis", C: OTiers },
@@ -15731,12 +17201,13 @@ const O_TABS = [
     ],
   },
   {
-    g: "Details",
+    g: "📈 Details",
     items: [
       { id: "oin", l: "Indicator Deep-Dive", C: OIndicators },
       { id: "om", l: "Methodology", C: OMethodology },
     ],
   },
+  { g: "📄 Reports", items: [{ id: "orp", l: "Generate Report", C: OReport }] },
 ];
 
 // ═══ APP ═════════════════════════════════════════════════════════
@@ -15819,12 +17290,12 @@ export default function App() {
           {[
             {
               id: "global",
-              l: "Global Index",
+              l: "🌐 Global Index",
               sub: `${G_DATA.length} countries`,
             },
             {
               id: "oic",
-              l: "OIC / IDEI",
+              l: "🕌 OIC / IDEI",
               sub: `${OIC_DATA.length} countries`,
             },
           ].map((m) => (
@@ -15923,7 +17394,7 @@ export default function App() {
               fontFamily: "var(--font)",
             }}
           >
-            {dark ? "Light Mode" : "Dark Mode"}
+            {dark ? "☀️ Light Mode" : "🌙 Dark Mode"}
           </button>
           <div
             style={{
