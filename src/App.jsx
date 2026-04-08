@@ -15688,25 +15688,26 @@ const TT = ({ active, payload, label }) => {
       style={{
         background: "var(--card)",
         border: "1px solid var(--border)",
-        borderRadius: "8px",
-        padding: "12px",
+        borderRadius: "12px",
+        padding: "12px 16px",
         fontSize: "12px",
-        fontFamily: "var(--font)",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+        fontFamily: "'DM Sans',sans-serif",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)",
+        backdropFilter: "blur(12px)",
       }}
     >
       <div
-        style={{ fontWeight: 700, marginBottom: "6px", color: "var(--accent)" }}
+        style={{ fontWeight: 700, marginBottom: "8px", color: "var(--text)", fontSize: "13px", borderBottom: "1px solid var(--border)", paddingBottom: "6px" }}
       >
         {label}
       </div>
       {payload.map((p, i) => (
         <div
           key={i}
-          style={{ color: p.color || "var(--text)", marginBottom: "2px" }}
+          style={{ color: "var(--muted)", marginBottom: "3px", display: "flex", justifyContent: "space-between", gap: "16px" }}
         >
-          <span style={{ fontWeight: 500 }}>{p.name}:</span>{" "}
-          <strong>
+          <span style={{ fontWeight: 500 }}>{p.name}</span>
+          <strong style={{ color: p.color || "var(--accent)" }}>
             {typeof p.value === "number" ? p.value.toFixed(1) : p.value}
           </strong>
         </div>
@@ -15721,10 +15722,10 @@ const Card = ({ children, style, ...p }) => (
     style={{
       background: "var(--card)",
       border: "1px solid var(--border)",
-      borderRadius: "14px",
+      borderRadius: "18px",
       padding: "24px",
-      boxShadow: "0 2px 12px var(--shadow)",
-      transition: "all 0.3s",
+      boxShadow: "0 1px 4px var(--shadow), 0 8px 32px rgba(0,0,0,0.04)",
+      transition: "box-shadow 0.25s ease, transform 0.25s ease",
       ...style,
     }}
     {...p}
@@ -15735,12 +15736,13 @@ const Card = ({ children, style, ...p }) => (
 const Title = ({ children }) => (
   <div
     style={{
-      fontSize: "15px",
-      fontFamily: "var(--font)",
-      color: "var(--accent)",
-      letterSpacing: "0.03em",
+      fontSize: "11px",
+      fontFamily: "'DM Sans',sans-serif",
+      color: "var(--muted)",
+      letterSpacing: "0.08em",
       marginBottom: "16px",
       fontWeight: 700,
+      textTransform: "uppercase",
     }}
   >
     {children}
@@ -15750,12 +15752,13 @@ const Badge = ({ c, bg, children }) => (
   <span
     style={{
       display: "inline-block",
-      padding: "4px 10px",
-      borderRadius: "6px",
+      padding: "4px 12px",
+      borderRadius: "20px",
       fontSize: "11px",
-      fontWeight: 600,
+      fontWeight: 700,
       color: c,
       background: bg,
+      letterSpacing: "0.03em",
     }}
   >
     {children}
@@ -15767,12 +15770,13 @@ const Sel = ({ value, onChange, children, style }) => (
     onChange={onChange}
     style={{
       background: "var(--card)",
-      border: "1px solid var(--border)",
+      border: "1.5px solid var(--border)",
       color: "var(--text)",
-      borderRadius: "8px",
-      padding: "10px 14px",
+      borderRadius: "10px",
+      padding: "9px 14px",
       fontSize: "13px",
-      fontFamily: "var(--font)",
+      fontFamily: "'DM Sans',sans-serif",
+      fontWeight: 500,
       cursor: "pointer",
       outline: "none",
       ...style,
@@ -15795,26 +15799,47 @@ const StatCards = ({ items }) => (
       <Card
         key={i}
         style={{
-          background: `linear-gradient(135deg,${item.c}12,${item.c}05)`,
-          borderColor: `${item.c}30`,
+          background: `linear-gradient(145deg,${item.c}10,var(--card))`,
+          borderColor: `${item.c}25`,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
         <div
           style={{
-            fontSize: "28px",
+            position: "absolute",
+            top: -20,
+            right: -20,
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            background: `${item.c}10`,
+          }}
+        />
+        <div
+          style={{
+            fontSize: "11px",
+            fontWeight: 700,
+            color: "var(--muted)",
+            letterSpacing: "0.07em",
+            textTransform: "uppercase",
+            marginBottom: "10px",
+          }}
+        >
+          {item.label}
+        </div>
+        <div
+          style={{
+            fontSize: "32px",
             fontWeight: 900,
             color: item.c,
-            fontFamily: "var(--font)",
+            fontFamily: "'DM Sans',sans-serif",
+            lineHeight: 1,
           }}
         >
           <AnimNum value={item.val} decimals={item.val >= 100 ? 0 : 1} />
         </div>
-        <div
-          style={{ fontSize: "12px", color: "var(--muted)", marginTop: "4px" }}
-        >
-          {item.label}
-        </div>
-        <div style={{ fontSize: "11px", color: item.c, fontWeight: 600 }}>
+        <div style={{ fontSize: "12px", color: item.c, fontWeight: 600, marginTop: "6px", opacity: 0.8 }}>
           {item.sub}
         </div>
       </Card>
@@ -15933,27 +15958,30 @@ function SearchBar({ data, scoreKey, onSelect, placeholder }) {
         placeholder={placeholder || "Search countries..."}
         style={{
           width: "100%",
-          padding: "10px 14px 10px 36px",
-          border: "1px solid var(--border)",
-          borderRadius: "10px",
+          padding: "10px 14px 10px 38px",
+          border: "1.5px solid var(--border)",
+          borderRadius: "12px",
           fontSize: "13px",
-          fontFamily: "var(--font)",
+          fontFamily: "'DM Sans',sans-serif",
+          fontWeight: 500,
           background: "var(--card)",
           color: "var(--text)",
           outline: "none",
+          boxShadow: "0 1px 4px var(--shadow)",
         }}
       />
       <span
         style={{
           position: "absolute",
-          left: "12px",
+          left: "13px",
           top: "50%",
           transform: "translateY(-50%)",
-          fontSize: "14px",
-          opacity: 0.4,
+          fontSize: "15px",
+          opacity: 0.35,
+          pointerEvents: "none",
         }}
       >
-        Search
+        🔍
       </span>
       {open && filtered.length > 0 && (
         <div
@@ -21045,33 +21073,35 @@ export default function App() {
 
   const theme = dark
     ? {
-        "--bg": "#0F172A",
-        "--card": "#1E293B",
-        "--text": "#E2E8F0",
-        "--muted": "#94A3B8",
-        "--border": "#334155",
-        "--accent": "#38BDF8",
-        "--hover": "#334155",
-        "--shadow": "rgba(0,0,0,0.4)",
-        "--font": "'DM Serif Display',Georgia,serif",
+        "--bg": "#07090F",
+        "--card": "#0F1220",
+        "--text": "#DDE4F5",
+        "--muted": "#7A85A8",
+        "--border": "#1C2240",
+        "--accent": "#818CF8",
+        "--accent2": "#A78BFA",
+        "--hover": "#141829",
+        "--shadow": "rgba(0,0,0,0.55)",
+        "--font": "'DM Sans','Inter',system-ui,sans-serif",
       }
     : {
-        "--bg": "#F8FAFC",
+        "--bg": "#EEF2FB",
         "--card": "#FFFFFF",
-        "--text": "#1E293B",
-        "--muted": "#64748B",
-        "--border": "#E2E8F0",
-        "--accent": "#1E88E5",
-        "--hover": "#F1F5F9",
-        "--shadow": "rgba(0,0,0,0.06)",
-        "--font": "'DM Serif Display',Georgia,serif",
+        "--text": "#0E1525",
+        "--muted": "#6B7A99",
+        "--border": "#DDE4F4",
+        "--accent": "#6366F1",
+        "--accent2": "#8B5CF6",
+        "--hover": "#F0F3FF",
+        "--shadow": "rgba(99,102,241,0.07)",
+        "--font": "'DM Sans','Inter',system-ui,sans-serif",
       };
 
   return (
     <div
       style={{
         ...theme,
-        fontFamily: "var(--font)",
+        fontFamily: "'DM Sans',system-ui,sans-serif",
         background: "var(--bg)",
         minHeight: "100vh",
         color: "var(--text)",
@@ -21079,22 +21109,30 @@ export default function App() {
       }}
     >
       <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap');
-      *{box-sizing:border-box;transition:background-color 0.3s,color 0.3s,border-color 0.3s}
-      ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--accent)}
-      select:hover,input:hover{border-color:var(--accent)!important}select:focus,input:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent)20;outline:none}
+      @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap');
+      *{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:'DM Sans',system-ui,sans-serif}
+      *{transition:background-color 0.25s ease,color 0.2s ease,border-color 0.25s ease,box-shadow 0.2s ease}
+      ::-webkit-scrollbar{width:5px;height:5px}
+      ::-webkit-scrollbar-track{background:transparent}
+      ::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+      ::-webkit-scrollbar-thumb:hover{background:var(--accent);opacity:0.7}
+      select:hover,input[type=text]:hover{border-color:var(--accent)!important}
+      select:focus,input:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent);outline:none}
       table tbody tr:hover{background:var(--hover)!important}
-      input[type=range]{height:6px;-webkit-appearance:none;border-radius:3px;background:var(--border)}
-      input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
-      @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+      input[type=range]{height:5px;-webkit-appearance:none;border-radius:10px;background:var(--border);border:none!important}
+      input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+      @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
     `}</style>
 
       {/* Sidebar */}
       <div
         style={{
-          width: "240px",
-          background: dark ? "#0F172A" : "#fff",
-          borderRight: `1px solid ${dark ? "#1E293B" : "#E2E8F0"}`,
+          width: "256px",
+          background: "var(--card)",
+          borderRight: "1px solid var(--border)",
           display: "flex",
           flexDirection: "column",
           height: "100vh",
@@ -21102,66 +21140,85 @@ export default function App() {
           top: 0,
           overflowY: "auto",
           flexShrink: 0,
+          boxShadow: "2px 0 20px rgba(0,0,0,0.04)",
         }}
       >
-        {/* Mode Toggle */}
-        <div style={{ padding: "16px" }}>
-          {[
-            {
-              id: "global",
-              l: "Global Index",
-              sub: `${G_DATA.length} countries`,
-            },
-            {
-              id: "oic",
-              l: "OIC / IDEI",
-              sub: `${OIC_DATA.length} countries`,
-            },
-          ].map((m) => (
-            <button
-              key={m.id}
-              onClick={() => switchMode(m.id)}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: "12px 14px",
-                border: "none",
-                borderRadius: "10px",
-                cursor: "pointer",
-                fontFamily: "var(--font)",
-                fontSize: "13px",
-                fontWeight: mode === m.id ? 700 : 500,
-                background: mode === m.id ? "var(--accent)" : "transparent",
-                color: mode === m.id ? "#fff" : "var(--muted)",
-                marginBottom: "4px",
-                textAlign: "left",
-                transition: "all 0.2s",
-              }}
-            >
-              {m.l}
-              <div style={{ fontSize: "10px", opacity: 0.7, marginTop: "2px" }}>
-                {m.sub}
+        {/* Logo / Branding */}
+        <div style={{ padding: "20px 20px 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: "10px",
+              background: "linear-gradient(135deg,var(--accent),var(--accent2))",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "16px", flexShrink: 0, boxShadow: "0 4px 12px color-mix(in srgb,var(--accent) 30%,transparent)",
+            }}>
+              🌐
+            </div>
+            <div>
+              <div style={{ fontSize: "13px", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.01em" }}>
+                {mode === "global" ? "GDEI" : "IDEI"}
               </div>
-            </button>
-          ))}
+              <div style={{ fontSize: "10px", color: "var(--muted)", fontWeight: 500 }}>
+                Digital Economy Index
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div
-          style={{
-            borderTop: "1px solid var(--border)",
-            padding: "8px 12px",
-            flex: 1,
-          }}
-        >
+        {/* Mode Toggle */}
+        <div style={{ padding: "0 16px 16px" }}>
+          <div style={{
+            background: "var(--bg)",
+            borderRadius: "12px",
+            padding: "4px",
+            display: "flex",
+            gap: "2px",
+            border: "1px solid var(--border)",
+          }}>
+            {[
+              { id: "global", l: "Global", sub: `${G_DATA.length}` },
+              { id: "oic", l: "OIC", sub: `${OIC_DATA.length}` },
+            ].map((m) => (
+              <button
+                key={m.id}
+                onClick={() => switchMode(m.id)}
+                style={{
+                  flex: 1,
+                  padding: "8px 6px",
+                  border: "none",
+                  borderRadius: "9px",
+                  cursor: "pointer",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: "12px",
+                  fontWeight: mode === m.id ? 700 : 500,
+                  background: mode === m.id ? "var(--accent)" : "transparent",
+                  color: mode === m.id ? "#fff" : "var(--muted)",
+                  transition: "all 0.2s",
+                  lineHeight: 1.3,
+                }}
+              >
+                {m.l}
+                <div style={{ fontSize: "9px", opacity: 0.75, marginTop: "1px" }}>
+                  {m.sub} countries
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ height: "1px", background: "var(--border)", margin: "0 16px" }} />
+
+        {/* Nav Items */}
+        <div style={{ padding: "12px 10px", flex: 1, overflowY: "auto" }}>
           {tabs.map((g) => (
-            <div key={g.g} style={{ marginBottom: "12px" }}>
+            <div key={g.g} style={{ marginBottom: "16px" }}>
               <div
                 style={{
-                  fontSize: "11px",
-                  fontWeight: 700,
+                  fontSize: "9px",
+                  fontWeight: 800,
                   color: "var(--muted)",
-                  padding: "8px 8px 4px",
-                  letterSpacing: "0.05em",
+                  padding: "6px 10px 4px",
+                  letterSpacing: "0.1em",
                   textTransform: "uppercase",
                 }}
               >
@@ -21172,20 +21229,24 @@ export default function App() {
                   key={t.id}
                   onClick={() => setAt(t.id)}
                   style={{
-                    display: "block",
+                    display: "flex",
+                    alignItems: "center",
                     width: "100%",
-                    padding: "8px 12px",
+                    padding: "9px 12px",
                     border: "none",
-                    borderRadius: "8px",
+                    borderRadius: "10px",
                     cursor: "pointer",
                     fontFamily: "'DM Sans',sans-serif",
                     fontSize: "13px",
                     fontWeight: at === t.id ? 600 : 400,
-                    background: at === t.id ? `var(--accent)15` : "transparent",
-                    color: at === t.id ? "var(--accent)" : "var(--text)",
+                    background: at === t.id
+                      ? `linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,transparent),color-mix(in srgb,var(--accent2) 6%,transparent))`
+                      : "transparent",
+                    color: at === t.id ? "var(--accent)" : "var(--muted)",
                     textAlign: "left",
                     transition: "all 0.15s",
-                    marginBottom: "2px",
+                    marginBottom: "1px",
+                    borderLeft: at === t.id ? "2.5px solid var(--accent)" : "2.5px solid transparent",
                   }}
                 >
                   {t.l}
@@ -21195,35 +21256,32 @@ export default function App() {
           ))}
         </div>
 
-        {/* Dark Mode + Branding */}
-        <div
-          style={{ padding: "12px 16px", borderTop: "1px solid var(--border)" }}
-        >
+        {/* Bottom: theme toggle + branding */}
+        <div style={{ padding: "12px 16px 16px", borderTop: "1px solid var(--border)" }}>
           <button
             onClick={() => setDark((d) => !d)}
             style={{
               width: "100%",
-              padding: "8px",
-              border: "1px solid var(--border)",
-              borderRadius: "8px",
+              padding: "9px 14px",
+              border: "1.5px solid var(--border)",
+              borderRadius: "10px",
               cursor: "pointer",
-              background: "var(--card)",
+              background: "var(--bg)",
               color: "var(--text)",
               fontSize: "12px",
-              fontFamily: "var(--font)",
+              fontFamily: "'DM Sans',sans-serif",
+              fontWeight: 600,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
             }}
           >
+            <span style={{ fontSize: "14px" }}>{dark ? "☀️" : "🌙"}</span>
             {dark ? "Light Mode" : "Dark Mode"}
           </button>
-          <div
-            style={{
-              fontSize: "10px",
-              color: "var(--muted)",
-              textAlign: "center",
-              marginTop: "8px",
-            }}
-          >
-            INCEIF University
+          <div style={{ fontSize: "10px", color: "var(--muted)", textAlign: "center", marginTop: "10px", lineHeight: 1.6 }}>
+            <strong style={{ color: "var(--accent)", fontWeight: 700 }}>INCEIF</strong> University
             <br />© 2025
           </div>
         </div>
@@ -21242,76 +21300,135 @@ export default function App() {
         <div
           style={{
             background: dark
-              ? "linear-gradient(135deg,#0F172A,#1E293B)"
-              : "linear-gradient(135deg,#0D47A1,#1565C0)",
-            padding: "28px 40px",
+              ? "linear-gradient(135deg,#0B0E1A 0%,#111628 50%,#0F1830 100%)"
+              : "linear-gradient(135deg,#4F52C8 0%,#6366F1 40%,#7C3AED 100%)",
+            padding: "28px 40px 32px",
             color: "#fff",
+            position: "relative",
+            overflow: "hidden",
           }}
         >
+          {/* Background decoration */}
+          <div style={{
+            position: "absolute", top: -40, right: -40,
+            width: 180, height: 180, borderRadius: "50%",
+            background: "rgba(255,255,255,0.04)",
+            pointerEvents: "none",
+          }} />
+          <div style={{
+            position: "absolute", bottom: -60, right: 120,
+            width: 140, height: 140, borderRadius: "50%",
+            background: "rgba(255,255,255,0.03)",
+            pointerEvents: "none",
+          }} />
           <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              position: "relative",
+              zIndex: 1,
             }}
           >
             <div>
+              <div style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                background: "rgba(255,255,255,0.15)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "20px",
+                padding: "4px 12px",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                marginBottom: "12px",
+                backdropFilter: "blur(10px)",
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80", display: "inline-block", animation: "pulse 2s infinite" }} />
+                {mode === "global" ? "Global Edition" : "OIC Edition"} · 2025
+              </div>
               <h1
                 style={{
-                  margin: 0,
-                  fontSize: "24px",
-                  fontWeight: 700,
-                  letterSpacing: "0.04em",
+                  margin: "0 0 6px",
+                  fontSize: "26px",
+                  fontWeight: 800,
+                  letterSpacing: "-0.02em",
+                  fontFamily: "'DM Sans',sans-serif",
+                  lineHeight: 1.15,
                 }}
               >
                 {mode === "global"
                   ? "Global Digital Economy Index"
                   : "Islamic Digital Economy Index"}
               </h1>
-              <div
-                style={{ fontSize: "12px", color: "#B0D4FF", marginTop: "4px" }}
-              >
-                {mode === "global"
-                  ? `${G_DATA.length} Countries · 15 Sources · 32+ Indicators`
-                  : `${OIC_DATA.length} OIC States · 1,009 Sub-Indicators · 15 Databases`}
+              <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.65)", fontWeight: 400, display: "flex", gap: "16px", flexWrap: "wrap" }}>
+                {mode === "global" ? (
+                  <>
+                    <span>🌍 {G_DATA.length} Countries</span>
+                    <span>📊 15 Data Sources</span>
+                    <span>📈 32+ Indicators</span>
+                  </>
+                ) : (
+                  <>
+                    <span>🕌 {OIC_DATA.length} OIC States</span>
+                    <span>📊 1,009 Sub-Indicators</span>
+                    <span>🗄️ 15 Databases</span>
+                  </>
+                )}
               </div>
             </div>
-            <div style={{ textAlign: "right" }}>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: "#7DD3FC",
-                  fontWeight: 600,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                {mode === "global" ? "GLOBAL" : "OIC"} AVERAGE
+            <div style={{ textAlign: "right", flexShrink: 0 }}>
+              <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.55)", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "4px" }}>
+                {mode === "global" ? "Global" : "OIC"} Average
               </div>
               <div
                 style={{
-                  fontSize: "42px",
+                  fontSize: "52px",
                   fontWeight: 900,
-                  letterSpacing: "-0.02em",
-                  background: "linear-gradient(135deg,#00E5FF,#00BCD4)",
+                  letterSpacing: "-0.03em",
+                  fontFamily: "'DM Sans',sans-serif",
+                  lineHeight: 1,
+                  background: "linear-gradient(135deg,#fff,rgba(255,255,255,0.7))",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}
               >
                 <AnimNum value={mode === "global" ? GA : OA} />
               </div>
+              <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)", marginTop: "2px" }}>out of 100</div>
             </div>
           </div>
+        </div>
+
+        {/* Tab Label Bar */}
+        <div style={{
+          padding: "12px 40px",
+          borderBottom: "1px solid var(--border)",
+          background: "var(--card)",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}>
+          <span style={{ fontSize: "11px", color: "var(--muted)", fontWeight: 500 }}>
+            {tabs.find(g => g.items.find(t => t.id === at))?.g}
+          </span>
+          <span style={{ fontSize: "11px", color: "var(--border)" }}>›</span>
+          <span style={{ fontSize: "13px", color: "var(--text)", fontWeight: 700 }}>
+            {curTab.l}
+          </span>
         </div>
 
         {/* Content */}
         <div
           style={{
-            padding: "28px 32px",
-            maxWidth: "1400px",
+            padding: "28px 36px",
+            maxWidth: "1440px",
             margin: "0 auto",
             width: "100%",
             flex: 1,
-            animation: "fadeIn 0.4s ease",
+            animation: "fadeIn 0.35s ease",
           }}
         >
           <Comp />
@@ -21320,16 +21437,18 @@ export default function App() {
         {/* Footer */}
         <div
           style={{
-            padding: "20px 40px",
+            padding: "16px 40px",
             textAlign: "center",
             fontSize: "11px",
             color: "var(--muted)",
             borderTop: "1px solid var(--border)",
+            background: "var(--card)",
+            fontWeight: 500,
           }}
         >
           {mode === "global"
-            ? "© 2025 Global Digital Economy Index — Data: ITU, World Bank, UN, UNCTAD, UNESCO, WIPO"
-            : "© 2025 Islamic Digital Economy Index (IDEI) — INCEIF University · The Global University of Islamic Finance"}
+            ? "© 2025 Global Digital Economy Index · Data: ITU · World Bank · UN · UNCTAD · UNESCO · WIPO"
+            : "© 2025 Islamic Digital Economy Index (IDEI) · INCEIF University — The Global University of Islamic Finance"}
         </div>
       </div>
     </div>
