@@ -15900,8 +15900,8 @@ const RankTable = ({ data, sk, clf, title, max = 10 }) => (
                 </span>
               </td>
               <td style={{ padding: "8px 6px", fontWeight: 600 }}>{c.name}</td>
-              <td style={{ padding: "8px 6px", fontWeight: 700, color: cl.c }}>
-                {c[sk]?.toFixed(1)}
+              <td style={{ padding: "8px 6px", fontWeight: 700, color: c[sk] != null ? cl.c : "var(--muted)" }}>
+                {c[sk] != null ? c[sk].toFixed(1) : "N/A"}
               </td>
               <td style={{ padding: "8px 6px" }}>
                 <Badge c={cl.c} bg={cl.b}>
