@@ -16278,13 +16278,17 @@ const gMapColor = (v) =>
 const oMapColor = (v) =>
   v >= 65 ? "#1E88E5" : v >= 50 ? "#43A047" : v >= 35 ? "#FFB300" : "#F4511E";
 
+const fmtGdei = (v) => (v == null ? "N/A" : v.toFixed(1));
+const fmtGdei2 = (v) => (v == null ? "N/A" : v.toFixed(2));
+
 // ═══════════════════════════════════════════════════════════════════
 // GLOBAL TABS
 // ═══════════════════════════════════════════════════════════════════
 function GOverview() {
   const sorted = [...G_DATA].sort((a, b) => a.rank - b.rank);
+  const scored = G_DATA.filter((c) => c.gdei != null);
   const std = Math.sqrt(
-    G_DATA.reduce((s, c) => s + Math.pow(c.gdei - GA, 2), 0) / G_DATA.length,
+    scored.reduce((s, c) => s + Math.pow(c.gdei - GA, 2), 0) / scored.length,
   );
   const pillarAvgs = GP.map((p) => ({
     name: p.short,
@@ -16297,26 +16301,26 @@ function GOverview() {
       return {
         name: r,
         count: cs.length,
-        avg: cs.length ? cs.reduce((s, c) => s + c.gdei, 0) / cs.length : 0,
+        avg: (() => { const sc = cs.filter((c) => c.gdei != null); return sc.length ? sc.reduce((s, c) => s + c.gdei, 0) / sc.length : 0; })(),
       };
     })
     .sort((a, b) => b.avg - a.avg);
   const clusters = [
     {
       n: "Digital Leaders",
-      f: (c) => c.gdei >= 60,
+      f: (c) => c.gdei != null && c.gdei >= 60,
       c: "#1E88E5",
       b: "#E3F2FD",
     },
     {
       n: "Digital Adopters",
-      f: (c) => c.gdei >= 40 && c.gdei < 60,
+      f: (c) => c.gdei != null && c.gdei >= 40 && c.gdei < 60,
       c: "#43A047",
       b: "#E8F5E9",
     },
     {
       n: "Digital Emerging",
-      f: (c) => c.gdei < 40,
+      f: (c) => c.gdei != null && c.gdei < 40,
       c: "#F4511E",
       b: "#FFF3E0",
     },
@@ -16344,9 +16348,9 @@ function GOverview() {
             c: "#00ACC1",
           },
           {
-            val: sorted[sorted.length - 1].gdei,
+            val: scored[scored.length - 1]?.gdei ?? 0,
             label: "Lowest Score",
-            sub: sorted[sorted.length - 1].name,
+            sub: scored[scored.length - 1]?.name ?? "—",
             c: "#F4511E",
           },
           {
@@ -16398,7 +16402,7 @@ function GOverview() {
                 </div>
                 <div style={{ fontSize: "11px", color: "var(--muted)" }}>
                   Avg:{" "}
-                  {(cs.reduce((s, c) => s + c.gdei, 0) / cs.length).toFixed(1)}
+                  {cs.length ? (cs.reduce((s, c) => s + c.gdei, 0) / cs.length).toFixed(1) : "N/A"}
                 </div>
               </div>
             );
@@ -16538,7 +16542,7 @@ function GProfiles() {
       </div>
       <StatCards
         items={[
-          { val: c.gdei, label: "GDEI Score", sub: "out of 100", c: "#1E88E5" },
+          { val: c.gdei ?? 0, label: "GDEI Score", sub: c.gdei != null ? "out of 100" : "N/A — unscored", c: "#1E88E5" },
           {
             val: c.rank,
             label: "Global Rank",
@@ -16704,7 +16708,7 @@ function GCompare() {
                 margin: "8px 0",
               }}
             >
-              <AnimNum value={c.gdei} />
+              {c.gdei != null ? <AnimNum value={c.gdei} /> : <span style={{ fontSize: "24px" }}>N/A</span>}
             </div>
             <div style={{ fontSize: "12px", color: "var(--muted)" }}>
               #{c.rank} · {c.region}
@@ -16847,14 +16851,14 @@ function GGeo() {
   const [sr, setSr] = useState("All");
   const filtered =
     sr === "All" ? G_DATA : G_DATA.filter((c) => c.region === sr);
-  const sorted = [...filtered].sort((a, b) => b.gdei - a.gdei);
+  const sorted = [...filtered].sort((a, b) => (b.gdei ?? -1) - (a.gdei ?? -1));
   const rs = GR.filter((r) => r !== "All")
     .map((r) => {
       const cs = G_DATA.filter((c) => c.region === r);
       const o = {
         name: r,
         n: cs.length,
-        gdei: cs.reduce((s, c) => s + c.gdei, 0) / cs.length,
+        gdei: (() => { const sc = cs.filter((c) => c.gdei != null); return sc.length ? sc.reduce((s, c) => s + c.gdei, 0) / sc.length : 0; })(),
       };
       GP.forEach((p) => {
         o[p.key] = cs.reduce((s, c) => s + c[p.key], 0) / cs.length;
@@ -16934,7 +16938,7 @@ function GGeo() {
                       color: "var(--accent)",
                     }}
                   >
-                    {r.gdei.toFixed(1)}
+                    {fmtGdei(r.gdei)}
                   </td>
                   {GP.map((p) => {
                     const v = r[p.key];
@@ -17039,7 +17043,7 @@ function GGeo() {
                     <td
                       style={{ padding: "6px", fontWeight: 700, color: cl.c }}
                     >
-                      {c.gdei.toFixed(1)}
+                      {fmtGdei(c.gdei)}
                     </td>
                     <td
                       style={{
@@ -17594,7 +17598,7 @@ function GStats() {
                     {r.idei.toFixed(2)}
                   </td>
                   <td style={{ padding: "8px 10px", color: "#1565C0" }}>
-                    {r.gdei.toFixed(2)}
+                    {fmtGdei2(r.gdei)}
                   </td>
                   <td
                     style={{
@@ -17712,7 +17716,7 @@ function GPeers() {
                     color: "var(--accent)",
                   }}
                 >
-                  {p.gdei.toFixed(1)}
+                  {fmtGdei(p.gdei)}
                 </td>
                 <td style={{ padding: "8px" }}>
                   <div
@@ -17953,7 +17957,7 @@ function GDataGaps() {
                       color: "var(--accent)",
                     }}
                   >
-                    {c.gdei.toFixed(1)}
+                    {fmtGdei(c.gdei)}
                   </td>
                 </tr>
               ))}
@@ -19552,7 +19556,8 @@ function GReport() {
   const strengths = ranksS.filter((p) => p.score > avg + 10);
   const weak = ranksS.filter((p) => p.score < avg - 5);
   const regionCs = G_DATA.filter((x) => x.region === c.region);
-  const regionAvg = regionCs.reduce((s, x) => s + x.gdei, 0) / regionCs.length;
+  const regionScored = regionCs.filter((x) => x.gdei != null);
+  const regionAvg = regionScored.length ? regionScored.reduce((s, x) => s + x.gdei, 0) / regionScored.length : null;
   const peers = G_DATA.filter((x) => x.code !== c.code)
     .map((x) => ({
       ...x,
@@ -19676,7 +19681,7 @@ function GReport() {
                   >
                     <span style={{ fontWeight: 600 }}>{x.name}</span>
                     <span style={{ color: "var(--accent)", fontWeight: 700 }}>
-                      {x.gdei.toFixed(1)}
+                      {fmtGdei(x.gdei)}
                     </span>
                   </div>
                 ))}
@@ -19763,7 +19768,7 @@ function GReport() {
                     fontFamily: "'DM Serif Display',serif",
                   }}
                 >
-                  {c.gdei.toFixed(1)}
+                  {fmtGdei(c.gdei)}
                 </div>
                 <div style={{ fontSize: "12px", opacity: 0.7 }}>
                   Rank #{c.rank} of {G_DATA.length}
@@ -19790,12 +19795,12 @@ function GReport() {
               >
                 {c.name} ranks{" "}
                 <strong style={{ color: "#1E88E5" }}>#{c.rank} globally</strong>{" "}
-                with a GDEI score of {c.gdei.toFixed(1)}, placing it in the{" "}
-                <strong>{cl.l}</strong> tier. The country scores{" "}
+                with a GDEI score of {fmtGdei(c.gdei)}, placing it in the{" "}
+                <strong>{cl.l}</strong> tier.{c.gdei != null && <> The country scores{" "}
                 {(c.gdei - avg).toFixed(1) > 0 ? "+" : ""}
                 {(c.gdei - avg).toFixed(1)} points{" "}
                 {c.gdei > avg ? "above" : "below"} the global average (
-                {avg.toFixed(1)}). Its strongest pillar is {ranksS[0].name} (
+                {avg.toFixed(1)}).</>} Its strongest pillar is {ranksS[0].name} (
                 {ranksS[0].score.toFixed(1)}, #{ranksS[0].rank}) and its weakest
                 is {ranksS[ranksS.length - 1].name} (
                 {ranksS[ranksS.length - 1].score.toFixed(1)}, #
@@ -20031,7 +20036,7 @@ function GReport() {
                       color: row.col,
                     }}
                   >
-                    {row.v.toFixed(1)}
+                    {row.v != null ? row.v.toFixed(1) : "N/A"}
                   </span>
                   <div
                     style={{
@@ -20046,7 +20051,7 @@ function GReport() {
                         height: "100%",
                         borderRadius: "3px",
                         background: row.col,
-                        width: `${row.v}%`,
+                        width: `${row.v ?? 0}%`,
                       }}
                     />
                   </div>
@@ -20213,7 +20218,7 @@ function GReport() {
                       fontWeight: 500,
                     }}
                   >
-                    {p.name} ({p.gdei.toFixed(1)})
+                    {p.name} ({fmtGdei(p.gdei)})
                   </span>
                 ))}
               </div>
@@ -20954,7 +20959,7 @@ function OReport() {
                   </div>
                   <div style={{ fontSize: "12px", color: "#94A3B8" }}>
                     {gc
-                      ? `of ${G_DATA.length} · GDEI: ${gc.gdei.toFixed(1)}`
+                      ? `of ${G_DATA.length} · GDEI: ${fmtGdei(gc.gdei)}`
                       : "Not matched"}
                   </div>
                 </div>
