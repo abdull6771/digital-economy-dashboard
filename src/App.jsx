@@ -4534,7 +4534,7 @@ const G_DATA = [
   {
     code: "DZA",
     name: "Algeria",
-    gdei: 0.0,
+    gdei: null,
     p1: 44.64,
     p2: 60.6,
     p3: 0.0,
@@ -4561,7 +4561,7 @@ const G_DATA = [
   {
     code: "ASM",
     name: "American Samoa",
-    gdei: 0.0,
+    gdei: null,
     p1: 27.56,
     p2: 0.0,
     p3: 0.0,
@@ -4588,7 +4588,7 @@ const G_DATA = [
   {
     code: "AND",
     name: "Andorra",
-    gdei: 0.0,
+    gdei: null,
     p1: 56.24,
     p2: 57.42,
     p3: 0.0,
@@ -4615,7 +4615,7 @@ const G_DATA = [
   {
     code: "AIA",
     name: "Anguilla",
-    gdei: 0.0,
+    gdei: null,
     p1: 20.6,
     p2: 0.0,
     p3: 0.0,
@@ -4642,7 +4642,7 @@ const G_DATA = [
   {
     code: "ABW",
     name: "Aruba",
-    gdei: 0.0,
+    gdei: null,
     p1: 31.9,
     p2: 0.0,
     p3: 0.0,
@@ -4669,7 +4669,7 @@ const G_DATA = [
   {
     code: "BRB",
     name: "Barbados",
-    gdei: 0.0,
+    gdei: null,
     p1: 34.87,
     p2: 39.74,
     p3: 0.0,
@@ -4696,7 +4696,7 @@ const G_DATA = [
   {
     code: "BMU",
     name: "Bermuda",
-    gdei: 0.0,
+    gdei: null,
     p1: 16.63,
     p2: 0.0,
     p3: 0.0,
@@ -4723,7 +4723,7 @@ const G_DATA = [
   {
     code: "VGB",
     name: "British Virgin Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 41.56,
     p2: 0.0,
     p3: 0.0,
@@ -4750,7 +4750,7 @@ const G_DATA = [
   {
     code: "CYM",
     name: "Cayman Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 25.58,
     p2: 0.0,
     p3: 0.0,
@@ -4777,7 +4777,7 @@ const G_DATA = [
   {
     code: "CAF",
     name: "Central African Republic",
-    gdei: 0.0,
+    gdei: null,
     p1: 37.77,
     p2: 14.37,
     p3: 0.0,
@@ -4804,7 +4804,7 @@ const G_DATA = [
   {
     code: "CCK",
     name: "Cocos (Keeling) Islands (Aus.)",
-    gdei: 0.0,
+    gdei: null,
     p1: 83.33,
     p2: 0.0,
     p3: 0.0,
@@ -4831,7 +4831,7 @@ const G_DATA = [
   {
     code: "COM",
     name: "Comoros",
-    gdei: 0.0,
+    gdei: null,
     p1: 40.73,
     p2: 33.96,
     p3: 0.0,
@@ -4858,7 +4858,7 @@ const G_DATA = [
   {
     code: "COK",
     name: "Cook Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 36.85,
     p2: 0.0,
     p3: 0.0,
@@ -4885,7 +4885,7 @@ const G_DATA = [
   {
     code: "NLD",
     name: "Curacao",
-    gdei: 0.0,
+    gdei: null,
     p1: 5.8,
     p2: 0.0,
     p3: 5.27,
@@ -4912,7 +4912,7 @@ const G_DATA = [
   {
     code: "CUW",
     name: "Curaçao",
-    gdei: 0.0,
+    gdei: null,
     p1: 34.81,
     p2: 0.0,
     p3: 0.0,
@@ -4939,7 +4939,7 @@ const G_DATA = [
   {
     code: "CIV",
     name: "Côte d'Ivoire",
-    gdei: 0.0,
+    gdei: null,
     p1: 42.66,
     p2: 0.0,
     p3: 0.0,
@@ -4966,7 +4966,7 @@ const G_DATA = [
   {
     code: "ERI",
     name: "Eritrea",
-    gdei: 0.0,
+    gdei: null,
     p1: 28.52,
     p2: 7.57,
     p3: 0.0,
@@ -4993,7 +4993,7 @@ const G_DATA = [
   {
     code: "SWZ",
     name: "Eswatini",
-    gdei: 0.0,
+    gdei: null,
     p1: 40.18,
     p2: 61.01,
     p3: 0.0,
@@ -5020,7 +5020,7 @@ const G_DATA = [
   {
     code: "FLK",
     name: "Falkland Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 38.17,
     p2: 0.0,
     p3: 0.0,
@@ -5047,7 +5047,7 @@ const G_DATA = [
   {
     code: "FRO",
     name: "Faroe Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 17.44,
     p2: 0.0,
     p3: 0.0,
@@ -5074,7 +5074,7 @@ const G_DATA = [
   {
     code: "GUF",
     name: "French Guiana",
-    gdei: 0.0,
+    gdei: null,
     p1: 32.39,
     p2: 0.0,
     p3: 0.0,
@@ -5101,7 +5101,7 @@ const G_DATA = [
   {
     code: "PYF",
     name: "French Polynesia",
-    gdei: 0.0,
+    gdei: null,
     p1: 37.52,
     p2: 0.0,
     p3: 0.0,
@@ -5128,7 +5128,7 @@ const G_DATA = [
   {
     code: "GIB",
     name: "Gibraltar",
-    gdei: 0.0,
+    gdei: null,
     p1: 24.09,
     p2: 0.0,
     p3: 0.0,
@@ -5155,7 +5155,7 @@ const G_DATA = [
   {
     code: "GRL",
     name: "Greenland",
-    gdei: 0.0,
+    gdei: null,
     p1: 25.76,
     p2: 0.0,
     p3: 0.0,
@@ -5182,7 +5182,7 @@ const G_DATA = [
   {
     code: "GLP",
     name: "Guadeloupe",
-    gdei: 0.0,
+    gdei: null,
     p1: 24.52,
     p2: 0.0,
     p3: 0.0,
@@ -5209,7 +5209,7 @@ const G_DATA = [
   {
     code: "GUM",
     name: "Guam",
-    gdei: 0.0,
+    gdei: null,
     p1: 60.06,
     p2: 0.0,
     p3: 2.12,
@@ -5236,7 +5236,7 @@ const G_DATA = [
   {
     code: "GGY",
     name: "Guernsey",
-    gdei: 0.0,
+    gdei: null,
     p1: 78.35,
     p2: 0.0,
     p3: 0.0,
@@ -5263,7 +5263,7 @@ const G_DATA = [
   {
     code: "GNB",
     name: "Guinea-Bissau",
-    gdei: 0.0,
+    gdei: null,
     p1: 15.4,
     p2: 20.67,
     p3: 0.0,
@@ -5290,7 +5290,7 @@ const G_DATA = [
   {
     code: "GUY",
     name: "Guyana",
-    gdei: 0.0,
+    gdei: null,
     p1: 38.81,
     p2: 42.69,
     p3: 0.0,
@@ -5317,7 +5317,7 @@ const G_DATA = [
   {
     code: "VAT",
     name: "Holy See (Vatican City State)",
-    gdei: 0.0,
+    gdei: null,
     p1: 58.74,
     p2: 3.74,
     p3: 0.0,
@@ -5344,7 +5344,7 @@ const G_DATA = [
   {
     code: "IMN",
     name: "Isle of Man",
-    gdei: 0.0,
+    gdei: null,
     p1: 0.0,
     p2: 0.0,
     p3: 0.0,
@@ -5371,7 +5371,7 @@ const G_DATA = [
   {
     code: "JEY",
     name: "Jersey",
-    gdei: 0.0,
+    gdei: null,
     p1: 93.9,
     p2: 0.0,
     p3: 0.0,
@@ -5398,7 +5398,7 @@ const G_DATA = [
   {
     code: "KIR",
     name: "Kiribati",
-    gdei: 0.0,
+    gdei: null,
     p1: 22.6,
     p2: 37.48,
     p3: 0.0,
@@ -5425,7 +5425,7 @@ const G_DATA = [
   {
     code: "PRK",
     name: "Korea, Dem. People's Rep.",
-    gdei: 0.0,
+    gdei: null,
     p1: 44.99,
     p2: 9.57,
     p3: 0.0,
@@ -5452,7 +5452,7 @@ const G_DATA = [
   {
     code: "XKX",
     name: "Kosovo",
-    gdei: 0.0,
+    gdei: null,
     p1: 41.97,
     p2: 70.35,
     p3: 0.0,
@@ -5479,7 +5479,7 @@ const G_DATA = [
   {
     code: "LBY",
     name: "Libya",
-    gdei: 0.0,
+    gdei: null,
     p1: 23.86,
     p2: 44.04,
     p3: 0.0,
@@ -5506,7 +5506,7 @@ const G_DATA = [
   {
     code: "MAC",
     name: "Macao SAR, China",
-    gdei: 0.0,
+    gdei: null,
     p1: 32.91,
     p2: 49.51,
     p3: 0.0,
@@ -5533,7 +5533,7 @@ const G_DATA = [
   {
     code: "MLT",
     name: "Malta",
-    gdei: 0.0,
+    gdei: null,
     p1: 53.97,
     p2: 84.25,
     p3: 0.0,
@@ -5560,7 +5560,7 @@ const G_DATA = [
   {
     code: "MHL",
     name: "Marshall Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 8.99,
     p2: 11.16,
     p3: 0.0,
@@ -5587,7 +5587,7 @@ const G_DATA = [
   {
     code: "MTQ",
     name: "Martinique",
-    gdei: 0.0,
+    gdei: null,
     p1: 21.99,
     p2: 0.0,
     p3: 0.0,
@@ -5614,7 +5614,7 @@ const G_DATA = [
   {
     code: "MRT",
     name: "Mauritania",
-    gdei: 0.0,
+    gdei: null,
     p1: 27.59,
     p2: 34.93,
     p3: 0.0,
@@ -5641,7 +5641,7 @@ const G_DATA = [
   {
     code: "MYT",
     name: "Mayotte",
-    gdei: 0.0,
+    gdei: null,
     p1: 0.0,
     p2: 0.0,
     p3: 0.0,
@@ -5668,7 +5668,7 @@ const G_DATA = [
   {
     code: "MCO",
     name: "Monaco",
-    gdei: 0.0,
+    gdei: null,
     p1: 56.54,
     p2: 56.95,
     p3: 0.0,
@@ -5695,7 +5695,7 @@ const G_DATA = [
   {
     code: "MSR",
     name: "Montserrat",
-    gdei: 0.0,
+    gdei: null,
     p1: 26.08,
     p2: 0.0,
     p3: 0.0,
@@ -5722,7 +5722,7 @@ const G_DATA = [
   {
     code: "NRU",
     name: "Nauru",
-    gdei: 0.0,
+    gdei: null,
     p1: 28.74,
     p2: 18.33,
     p3: 0.0,
@@ -5749,7 +5749,7 @@ const G_DATA = [
   {
     code: "NCL",
     name: "New Caledonia",
-    gdei: 0.0,
+    gdei: null,
     p1: 20.4,
     p2: 0.0,
     p3: 0.62,
@@ -5776,7 +5776,7 @@ const G_DATA = [
   {
     code: "NER",
     name: "Niger",
-    gdei: 0.0,
+    gdei: null,
     p1: 20.57,
     p2: 34.6,
     p3: 0.0,
@@ -5803,7 +5803,7 @@ const G_DATA = [
   {
     code: "NIU",
     name: "Niue",
-    gdei: 0.0,
+    gdei: null,
     p1: 21.08,
     p2: 0.0,
     p3: 0.0,
@@ -5830,7 +5830,7 @@ const G_DATA = [
   {
     code: "NFK",
     name: "Norfolk Island (Aus.)",
-    gdei: 0.0,
+    gdei: null,
     p1: 0.0,
     p2: 0.0,
     p3: 0.0,
@@ -5857,7 +5857,7 @@ const G_DATA = [
   {
     code: "MNP",
     name: "Northern Mariana Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 49.49,
     p2: 0.0,
     p3: 0.62,
@@ -5884,7 +5884,7 @@ const G_DATA = [
   {
     code: "PLW",
     name: "Palau",
-    gdei: 0.0,
+    gdei: null,
     p1: 18.59,
     p2: 31.42,
     p3: 0.0,
@@ -5911,7 +5911,7 @@ const G_DATA = [
   {
     code: "PRI",
     name: "Puerto Rico",
-    gdei: 0.0,
+    gdei: null,
     p1: 24.93,
     p2: 0.0,
     p3: 4.16,
@@ -5938,7 +5938,7 @@ const G_DATA = [
   {
     code: "REU",
     name: "Reunion",
-    gdei: 0.0,
+    gdei: null,
     p1: 13.5,
     p2: 0.0,
     p3: 0.0,
@@ -5965,7 +5965,7 @@ const G_DATA = [
   {
     code: "SHN",
     name: "Saint Helena Ascension and Tristan da Cunha (UK)",
-    gdei: 0.0,
+    gdei: null,
     p1: 33.71,
     p2: 0.0,
     p3: 0.0,
@@ -5992,7 +5992,7 @@ const G_DATA = [
   {
     code: "SPM",
     name: "Saint-Pierre-et-Miquelon (Fr.)",
-    gdei: 0.0,
+    gdei: null,
     p1: 0.03,
     p2: 0.0,
     p3: 0.0,
@@ -6019,7 +6019,7 @@ const G_DATA = [
   {
     code: "WSM",
     name: "Samoa",
-    gdei: 0.0,
+    gdei: null,
     p1: 39.15,
     p2: 37.65,
     p3: 0.0,
@@ -6046,7 +6046,7 @@ const G_DATA = [
   {
     code: "SMR",
     name: "San Marino",
-    gdei: 0.0,
+    gdei: null,
     p1: 49.42,
     p2: 28.17,
     p3: 0.0,
@@ -6073,7 +6073,7 @@ const G_DATA = [
   {
     code: "STP",
     name: "Sao Tome and Principe",
-    gdei: 0.0,
+    gdei: null,
     p1: 41.85,
     p2: 26.9,
     p3: 0.0,
@@ -6100,7 +6100,7 @@ const G_DATA = [
   {
     code: "SYC",
     name: "Seychelles",
-    gdei: 0.0,
+    gdei: null,
     p1: 22.82,
     p2: 51.55,
     p3: 0.0,
@@ -6127,7 +6127,7 @@ const G_DATA = [
   {
     code: "SXM",
     name: "Sint Maarten (Dutch part)",
-    gdei: 0.0,
+    gdei: null,
     p1: 26.48,
     p2: 0.0,
     p3: 2.03,
@@ -6154,7 +6154,7 @@ const G_DATA = [
   {
     code: "MAF",
     name: "St. Martin (French part)",
-    gdei: 0.0,
+    gdei: null,
     p1: 0.0,
     p2: 0.0,
     p3: 0.0,
@@ -6181,7 +6181,7 @@ const G_DATA = [
   {
     code: "SYR",
     name: "Syrian Arab Republic",
-    gdei: 0.0,
+    gdei: null,
     p1: 38.44,
     p2: 41.6,
     p3: 0.0,
@@ -6208,7 +6208,7 @@ const G_DATA = [
   {
     code: "STP",
     name: "São Tomé and Príncipe",
-    gdei: 0.0,
+    gdei: null,
     p1: 32.0,
     p2: 0.0,
     p3: 0.0,
@@ -6235,7 +6235,7 @@ const G_DATA = [
   {
     code: "TWN",
     name: "Taiwan, China",
-    gdei: 0.0,
+    gdei: null,
     p1: 44.34,
     p2: 79.68,
     p3: 0.0,
@@ -6262,7 +6262,7 @@ const G_DATA = [
   {
     code: "TJK",
     name: "Tajikistan",
-    gdei: 0.0,
+    gdei: null,
     p1: 29.52,
     p2: 32.72,
     p3: 0.0,
@@ -6289,7 +6289,7 @@ const G_DATA = [
   {
     code: "TKL",
     name: "Tokelau (NZ)",
-    gdei: 0.0,
+    gdei: null,
     p1: 31.08,
     p2: 0.0,
     p3: 0.0,
@@ -6316,7 +6316,7 @@ const G_DATA = [
   {
     code: "TON",
     name: "Tonga",
-    gdei: 0.0,
+    gdei: null,
     p1: 44.91,
     p2: 36.85,
     p3: 0.0,
@@ -6343,7 +6343,7 @@ const G_DATA = [
   {
     code: "TKM",
     name: "Turkmenistan",
-    gdei: 0.0,
+    gdei: null,
     p1: 37.24,
     p2: 22.07,
     p3: 0.0,
@@ -6370,7 +6370,7 @@ const G_DATA = [
   {
     code: "TCA",
     name: "Turks and Caicos Islands",
-    gdei: 0.0,
+    gdei: null,
     p1: 38.49,
     p2: 0.0,
     p3: 0.0,
@@ -6397,7 +6397,7 @@ const G_DATA = [
   {
     code: "TUV",
     name: "Tuvalu",
-    gdei: 0.0,
+    gdei: null,
     p1: 16.09,
     p2: 17.78,
     p3: 0.0,
@@ -6424,7 +6424,7 @@ const G_DATA = [
   {
     code: "VNM",
     name: "Vietnam",
-    gdei: 0.0,
+    gdei: null,
     p1: 59.3,
     p2: 0.0,
     p3: 0.0,
@@ -6451,7 +6451,7 @@ const G_DATA = [
   {
     code: "VIR",
     name: "Virgin Islands (U.S.)",
-    gdei: 0.0,
+    gdei: null,
     p1: 36.4,
     p2: 0.0,
     p3: 0.0,
@@ -6478,7 +6478,7 @@ const G_DATA = [
   {
     code: "WLF",
     name: "Wallis-et-Futuna (Fr.)",
-    gdei: 0.0,
+    gdei: null,
     p1: 30.75,
     p2: 0.0,
     p3: 0.0,
