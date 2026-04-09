@@ -6425,26 +6425,26 @@ const G_DATA = [
     code: "VNM",
     name: "Vietnam",
     gdei: null,
-    p1: 59.3,
-    p2: 0.0,
-    p3: 0.0,
-    p4: 35.08,
-    p5: 0.0,
-    i1_1: 0.0,
-    i1_2: 0.0,
-    i1_3: 0.0,
-    i1_4: 59.3,
-    i2_1: 0.0,
-    i2_2: 0.0,
-    i3_1: 0.0,
-    i3_2: 0.0,
-    i4_1: 0.0,
-    i4_2: 35.08,
-    i4_3: 0.0,
-    i4_4: 0.0,
-    i4_5: 0.0,
-    i5_1: 0.0,
-    i5_2: 0.0,
+    p1: null,
+    p2: null,
+    p3: null,
+    p4: null,
+    p5: null,
+    i1_1: null,
+    i1_2: null,
+    i1_3: null,
+    i1_4: null,
+    i2_1: null,
+    i2_2: null,
+    i3_1: null,
+    i3_2: null,
+    i4_1: null,
+    i4_2: null,
+    i4_3: null,
+    i4_4: null,
+    i4_5: null,
+    i5_1: null,
+    i5_2: null,
     rank: 238,
     region: "East Asia & Pacific",
   },
@@ -16184,11 +16184,11 @@ function WorldMap({ data, scoreKey, colorFn, title }) {
               {hd.name}
             </div>
             <div style={{ fontSize: "11px", color: "var(--muted)" }}>
-              Score:{" "}
-              <strong style={{ color: "var(--accent)" }}>
-                {hd[scoreKey]?.toFixed(1)}
-              </strong>{" "}
-              · Rank #{hd.rank}
+              {hd[scoreKey] != null ? (
+                <>Score: <strong style={{ color: "var(--accent)" }}>{hd[scoreKey].toFixed(1)}</strong> · Rank #{hd.rank}</>
+              ) : (
+                <span style={{ color: "#F4511E", fontWeight: 600 }}>No data available</span>
+              )}
             </div>
           </div>
         )}
@@ -16274,7 +16274,7 @@ function WorldMap({ data, scoreKey, colorFn, title }) {
 }
 
 const gMapColor = (v) =>
-  v >= 60 ? "#1E88E5" : v >= 40 ? "#43A047" : "#F4511E";
+  v == null ? "var(--border)" : v >= 60 ? "#1E88E5" : v >= 40 ? "#43A047" : "#F4511E";
 const oMapColor = (v) =>
   v >= 65 ? "#1E88E5" : v >= 50 ? "#43A047" : v >= 35 ? "#FFB300" : "#F4511E";
 
@@ -17029,7 +17029,7 @@ function GGeo() {
               </tr>
             </thead>
             <tbody>
-              {sorted.map((c, i) => {
+              {sorted.filter((c) => c.gdei != null).map((c) => {
                 const cl = gCl(c.gdei);
                 return (
                   <tr
@@ -17037,26 +17037,52 @@ function GGeo() {
                     style={{ borderBottom: "1px solid var(--border)" }}
                   >
                     <td style={{ padding: "6px" }}>{c.rank}</td>
-                    <td style={{ padding: "6px", fontWeight: 600 }}>
-                      {c.name}
-                    </td>
-                    <td
-                      style={{ padding: "6px", fontWeight: 700, color: cl.c }}
-                    >
+                    <td style={{ padding: "6px", fontWeight: 600 }}>{c.name}</td>
+                    <td style={{ padding: "6px", fontWeight: 700, color: cl.c }}>
                       {fmtGdei(c.gdei)}
                     </td>
-                    <td
-                      style={{
-                        padding: "6px",
-                        fontSize: "11px",
-                        color: "var(--muted)",
-                      }}
-                    >
+                    <td style={{ padding: "6px", fontSize: "11px", color: "var(--muted)" }}>
                       {c.region}
                     </td>
                   </tr>
                 );
               })}
+              {sorted.filter((c) => c.gdei == null).length > 0 && (
+                <>
+                  <tr>
+                    <td
+                      colSpan={4}
+                      style={{
+                        padding: "10px 6px 4px",
+                        fontSize: "10px",
+                        fontWeight: 800,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "var(--muted)",
+                        borderTop: "2px dashed var(--border)",
+                        background: "var(--bg)",
+                      }}
+                    >
+                      Insufficient Data Coverage
+                    </td>
+                  </tr>
+                  {sorted.filter((c) => c.gdei == null).map((c) => (
+                    <tr
+                      key={c.code}
+                      style={{ borderBottom: "1px solid var(--border)", opacity: 0.7 }}
+                    >
+                      <td style={{ padding: "6px", color: "var(--muted)" }}>—</td>
+                      <td style={{ padding: "6px", fontWeight: 600 }}>{c.name}</td>
+                      <td style={{ padding: "6px" }}>
+                        <Badge c="var(--muted)" bg="var(--bg)">Not ranked</Badge>
+                      </td>
+                      <td style={{ padding: "6px", fontSize: "11px", color: "var(--muted)" }}>
+                        {c.region}
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
             </tbody>
           </table>
         </div>
