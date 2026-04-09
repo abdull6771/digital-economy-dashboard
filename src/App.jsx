@@ -20917,7 +20917,7 @@ function OReport() {
             </div>
 
             {/* 5. OIC vs Global Positioning */}
-            <div style={{ marginBottom: "12px" }}>
+            <div style={{ marginBottom: "28px" }}>
               <div
                 style={{
                   fontSize: "16px",
@@ -20989,6 +20989,154 @@ function OReport() {
                       : "Not matched"}
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* 6. IDEI vs GDEI — Why the Same Country Gets Different Scores */}
+            <div style={{ marginBottom: "12px" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  marginBottom: "12px",
+                  color: "#0D47A1",
+                }}
+              >
+                6. IDEI vs GDEI — Why the same country gets different scores
+              </div>
+              <div
+                style={{
+                  fontSize: "13px",
+                  lineHeight: 1.75,
+                  color: "#475569",
+                  marginBottom: "14px",
+                }}
+              >
+                Both indices use identical P5/P95 winsorized min-max normalization,
+                but apply it against completely different reference universes. The
+                IDEI benchmarks 57 OIC members against each other; the GDEI
+                benchmarks 240 world countries against each other. A country can
+                therefore look dominant in the IDEI and merely solid in the GDEI —
+                the raw data is the same, only the normalization pool changes.
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                  marginBottom: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "14px",
+                    borderRadius: "10px",
+                    background: "#E8F5E9",
+                    border: "1px solid #43A04730",
+                  }}
+                >
+                  <div style={{ fontWeight: 700, color: "#1B5E20", marginBottom: "6px", fontSize: "13px" }}>
+                    IDEI (Islamic Digital Economy Index)
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#2E7D32", lineHeight: 1.7 }}>
+                    Normalization pool: <strong>57 OIC members</strong><br />
+                    P95 benchmark: the best-performing OIC country<br />
+                    Measures leadership <em>within</em> the Muslim world
+                  </div>
+                </div>
+                <div
+                  style={{
+                    padding: "14px",
+                    borderRadius: "10px",
+                    background: "#E3F2FD",
+                    border: "1px solid #1E88E530",
+                  }}
+                >
+                  <div style={{ fontWeight: 700, color: "#0D47A1", marginBottom: "6px", fontSize: "13px" }}>
+                    GDEI (Global Digital Economy Index)
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#1565C0", lineHeight: 1.7 }}>
+                    Normalization pool: <strong>240 world countries</strong><br />
+                    P95 benchmark: the best-performing country on Earth<br />
+                    Measures absolute position in the global digital economy
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  color: "#0D47A1",
+                  marginBottom: "8px",
+                }}
+              >
+                Case study: Malaysia — #1 of 57 OIC (IDEI 82.65) → #47 of 240 global (GDEI 54.79)
+              </div>
+              <div style={{ fontSize: "12px", color: "#475569", marginBottom: "10px" }}>
+                Four indicators drive almost the entire gap. Malaysia dominates OIC
+                peers on these but sits far below global leaders:
+              </div>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  fontSize: "12px",
+                  marginBottom: "12px",
+                }}
+              >
+                <thead>
+                  <tr style={{ borderBottom: "2px solid #E2E8F0" }}>
+                    {["Indicator", "IDEI", "GDEI", "Drop", "Root cause"].map((h) => (
+                      <th
+                        key={h}
+                        style={{
+                          textAlign: "left",
+                          padding: "8px 10px",
+                          color: "#64748B",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { ind: "4.5 UNESCO STEM graduates", idei: 95.77, gdei: 2.76, cause: "South Korea, Germany, Finland set the global benchmark" },
+                    { ind: "4.4 WIPO ICT patents", idei: 95.15, gdei: 4.45, cause: "US/China/Japan file millions vs Malaysia's hundreds" },
+                    { ind: "3.1 Data centers (PeeringDB)", idei: 100.0, gdei: 26.71, cause: "Brazil, India, Germany score 100 globally" },
+                    { ind: "3.2 Internet exchanges (PCH)", idei: 66.98, gdei: 19.81, cause: "Indonesia alone has far more IXP infrastructure" },
+                  ].map((r) => (
+                    <tr key={r.ind} style={{ borderBottom: "1px solid #F1F5F9" }}>
+                      <td style={{ padding: "7px 10px", fontWeight: 600 }}>{r.ind}</td>
+                      <td style={{ padding: "7px 10px", color: "#2E7D32" }}>{r.idei.toFixed(2)}</td>
+                      <td style={{ padding: "7px 10px", color: "#1565C0" }}>{r.gdei.toFixed(2)}</td>
+                      <td style={{ padding: "7px 10px", color: "#C62828", fontWeight: 700 }}>
+                        −{(r.idei - r.gdei).toFixed(1)}
+                      </td>
+                      <td style={{ padding: "7px 10px", color: "#475569" }}>{r.cause}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div
+                style={{
+                  fontSize: "12px",
+                  color: "#475569",
+                  padding: "12px",
+                  background: "#F8FAFC",
+                  borderRadius: "8px",
+                  borderLeft: "3px solid #1E88E5",
+                  lineHeight: 1.7,
+                }}
+              >
+                Malaysia's cybersecurity, e-government and regulatory scores barely
+                move between the two indices — these are genuine global competitive
+                advantages. The divergence is not a flaw in either index: it reflects
+                the structural difference between measuring leadership within a peer
+                group of 57 OIC nations and measuring absolute position among 240
+                world countries including the largest digital economies.
               </div>
             </div>
           </div>
