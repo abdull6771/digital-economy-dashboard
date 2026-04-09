@@ -645,7 +645,7 @@ const G_DATA = [
   },
   {
     code: "TUR",
-    name: "Türkiye",
+    name: "Turkiye",
     gdei: 62.32,
     p1: 57.89,
     p2: 93.0,
