@@ -17898,6 +17898,16 @@ function GDataGaps() {
       />
       <Card>
         <Title>Data Completeness by Country</Title>
+        <div
+          style={{
+            fontSize: "12px",
+            color: "var(--muted)",
+            marginBottom: "12px",
+            fontStyle: "italic",
+          }}
+        >
+          Data completeness by country based on the last reporting year in each sub-indicator.
+        </div>
         <div style={{ maxHeight: "500px", overflowY: "auto" }}>
           <table
             style={{
